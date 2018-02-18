@@ -33,7 +33,6 @@ proguard/
 captures/
 
 # IntelliJ
-*.iml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -63,8 +62,6 @@ fastlane/test_output
 fastlane/readme.md
 
 # extra
-*.iml
-*.gradle
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
