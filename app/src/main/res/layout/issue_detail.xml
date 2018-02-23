@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nameIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:text="Issue Name"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/statusIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nameIssue"
+        android:layout_alignBottom="@+id/nameIssue"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="34dp"
+        android:text="Status: status" />
+
+    <TextView
+        android:id="@+id/descriptionIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/nameIssue"
+        android:layout_below="@+id/nameIssue"
+        android:layout_marginTop="27dp"
+        android:text="Description" />
+
+    <ListView
+        android:id="@+id/commentList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/descriptionIssue"
+        android:layout_marginTop="138dp" />
+
+</RelativeLayout>
