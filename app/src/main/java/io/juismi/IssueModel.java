@@ -25,7 +25,7 @@ public class IssueModel {
     String id;
 
     public IssueModel(){}
-
+  
     public String getName() {
         return name;
     }
