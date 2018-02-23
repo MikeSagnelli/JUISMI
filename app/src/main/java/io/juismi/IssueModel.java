@@ -24,6 +24,8 @@ public class IssueModel {
     String noComments;
     String id;
 
+    public IssueModel(){}
+  
     public String getName() {
         return name;
     }
