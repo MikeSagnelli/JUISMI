@@ -17,12 +17,16 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private final int REGISTER_CODE = 0;
 
+    //private FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
+
+        //auth = FirebaseAuth.getInstance();
 
         register = (TextView) findViewById(R.id.register);
         login = (Button) findViewById(R.id.login);
@@ -44,7 +48,17 @@ public class LoginActivity extends AppCompatActivity {
         if(emailText.equals("") || passwordText.equals("")){
             Toast.makeText(this, "Llena los campos", Toast.LENGTH_SHORT).show();
         } else{
-            // API CALL
+            /*auth.signInWithEmailAndPassword(emailText, passwordText)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Error de login", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                            }
+                        }
+                    });*/
         }
     }
 
