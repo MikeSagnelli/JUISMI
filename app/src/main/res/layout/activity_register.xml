@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.juismi.RegisterActivity">
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/email"
+        android:layout_below="@+id/email"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/name"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/passwordConfirm"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/password"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Confirmar contraseña"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/submit"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordConfirm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:background="@color/colorPrimaryDark"
+        android:onClick="submit"
+        android:text="Siguiente"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="11dp"
+        android:layout_toStartOf="@+id/login"
+        android:text="¿Ya tienes una cuenta? " />
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/question"
+        android:layout_alignBottom="@+id/question"
+        android:layout_alignEnd="@+id/submit"
+        android:layout_marginEnd="51dp"
+        android:text="Inicia Sesión"
+        android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold" />
+
+</RelativeLayout>
