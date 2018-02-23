@@ -34,21 +34,7 @@ public class IssueDetail extends AppCompatActivity {
 
        // issueModels = new ArrayList<>();
        // issueModels.add(new IssueModel("Listview con Issues","4", 2));
-       // public IssueModel(String name, String description, String tag, String status, String comment, String assignedTo, int points)
-        IssueModel issue = new IssueModel("Issues por hacer","Andaba sacando papa una muchacha muy guapa " +
-                "Una muchacha muy guapa Andaba sacando papa " +
-                "En eso me le acerque a esa muchacha guapa " +
-                "Y me dijo la muchacha me quieres mirar la papa " +
-                "Después me enseño su papa esa muchacha muy guapa " +
-                "Su papa no me dejaba que yo le viera la papa ",
-                "Tag?", "Done", "", "Al Manlio", 3 );
-
-        name.setText(issue.getName());
-        description.setText(issue.getDescription());
-        tag.setText(issue.getTag());
-        status.setText(issue.getStatus());
-        assignedTo.setText(issue.getAssignedTo());
-        points.setText(issue.getPoints() + "");
+       // public IssueModel(String name, String description, String tag, String status, String comment, String assignedTo, int points
 
         boton.setOnClickListener(new View.OnClickListener() {
             @Override

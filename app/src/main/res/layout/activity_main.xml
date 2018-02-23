@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="46dp"
         android:contentDescription="@string/app_name"
         app:srcCompat="@drawable/logo2" />
 
@@ -23,7 +23,6 @@
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        android:contentDescription="@string/about"
         android:text="@string/about"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -38,15 +37,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="29dp"
         android:elevation="1000dp"
-        android:text="@string/login_button"
-        tools:text="@string/login_button" />
+        android:text="@string/login_button" />
 
     <TextView
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         android:layout_toStartOf="@+id/register"
         android:text="@string/have_account" />
 

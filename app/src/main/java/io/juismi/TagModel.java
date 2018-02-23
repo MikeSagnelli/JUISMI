@@ -5,15 +5,14 @@ package io.juismi;
  */
 
 public class TagModel {
-    String color;
-    String name;
-    String id;
+    private String color;
+    private String name;
+    private int id;
 
-    public TagModel(String color, String name, String id){
+    public TagModel(String color, String name, int id){
         this.color = color;
         this.name = name;
-        this.id = this.id;
-
+        this.id = id;
     }
 
     public void setColor(String color) {
@@ -24,20 +23,17 @@ public class TagModel {
         this.name = name;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getColor() {
-
-        return color;
-    }
+    public String getColor() { return color;}
 
     public String getName() {
         return name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 }

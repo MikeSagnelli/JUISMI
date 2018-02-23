@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        
+        setContentView(R.layout.activity_main);
+
         this.mAuth = FirebaseAuth.getInstance();
         this.checkSession();
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = this.mAuth.getCurrentUser();
 
         if(currentUser != null){
-            Intent intent = new Intent(this, IssuesView.class);
+            Intent intent = new Intent(this, IssuesActivity.class);
             intent.putExtra("userName", currentUser.getDisplayName());
             startActivityForResult(intent, ISSUES_ACTIVITY);
         }
@@ -69,15 +69,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ISSUES_ACTIVITY && resultCode == Activity.RESULT_OK){
-            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
-        }
-        else if(requestCode == REGISTER_ACTIVITY && resultCode == Activity.RESULT_OK){
-            Toast.makeText(this, "Account created. Please log in.", Toast.LENGTH_SHORT).show();
+        if(requestCode == REGISTER_ACTIVITY && resultCode == Activity.RESULT_OK){
+            this.checkSession();
+            Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
         }
         else if(requestCode == LOGIN_ACTIVITY && resultCode == Activity.RESULT_OK){
             this.checkSession();
             Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
+            this.mAuth.signOut();
+            this.checkSession();
         }
     }
 }
