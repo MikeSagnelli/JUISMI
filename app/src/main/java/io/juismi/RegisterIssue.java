@@ -28,6 +28,7 @@ public class RegisterIssue extends AppCompatActivity {
                 5
         );
 
+
         IssuesView.registerIssue(newIssue);
 
         /*String messageText = ((EditText)findViewById(R.id.message)).getText().toString();
