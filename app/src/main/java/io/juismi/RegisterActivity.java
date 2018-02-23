@@ -15,10 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,12 +22,11 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity {
 
     private TextView login;
-    private Button submit;
     private EditText email, name, password, passwordConfirm;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+                        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    //private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +34,23 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
 
-        //auth = FirebaseAuth.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
 
-        login = (TextView) findViewById(R.id.login);
-        submit = (Button) findViewById(R.id.submit);
-        email = (EditText) findViewById(R.id.email);
-        name = (EditText) findViewById(R.id.name);
-        password = (EditText) findViewById(R.id.password);
-        passwordConfirm = (EditText) findViewById(R.id.passwordConfirm);
-
+        this.login = (TextView) findViewById(R.id.loginLink);
+        this.email = (EditText) findViewById(R.id.email);
+        this.name = (EditText) findViewById(R.id.name);
+        this.password = (EditText) findViewById(R.id.password);
+        this.passwordConfirm = (EditText) findViewById(R.id.passwordConfirm);
 
 
-        login.setOnClickListener(new View.OnClickListener() {
+
+        this.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                startActivityForResult(intent, 0);
+                Intent result = new Intent();
+                setResult(Activity.RESULT_CANCELED, result);
+                Toast.makeText(RegisterActivity.this, "Returned to log in.", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -72,32 +68,32 @@ public class RegisterActivity extends AppCompatActivity {
 
         boolean notFilled = emailText.equals("") || passwordText.equals("") || nameText.equals("") || passwordConfirmText.equals("");
         if(notFilled){
-            Toast.makeText(this, "Llena los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fill with credentials", Toast.LENGTH_SHORT).show();
 
         } else if(!validate(emailText)){
-            Toast.makeText(this, "Email inválido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show();
 
         } else if(passwordText.length() < 6){
-            Toast.makeText(this, "Contraseña mínimo 6 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Minimum 6 characters in password", Toast.LENGTH_SHORT).show();
 
         } else if(!passwordText.equals(passwordConfirmText)){
-            Toast.makeText(this, "Las contraseñas deben coincidir", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show();
 
         }else{
-            /*auth.createUserWithEmailAndPassword(emailText, passwordText)
+            mAuth.createUserWithEmailAndPassword(emailText, passwordText)
                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (!task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "Error de registro", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                             } else {
                                 Intent result = new Intent();
                                 setResult(Activity.RESULT_OK, result);
                                 finish();
                             }
                         }
-                    });*/
+                    });
 
         }
 

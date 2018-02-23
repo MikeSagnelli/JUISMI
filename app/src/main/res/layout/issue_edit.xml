@@ -3,74 +3,74 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/saveButton"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Save Changes" />
-
-    <EditText
-        android:id="@+id/editName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:hint="Nombre del issue"
+        android:layout_centerHorizontal="true"
+        android:text="Edit Issue"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <EditText
+        android:id="@+id/name_input2"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="23dp"
+        android:hint="Name"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/editDescription"
-        android:layout_width="match_parent"
+        android:id="@+id/points_input2"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editStatus"
-        android:hint="Descripción"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/editPoints"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editDescription"
+        android:layout_alignBaseline="@+id/name_input2"
+        android:layout_alignBottom="@+id/name_input2"
+        android:layout_alignParentEnd="true"
         android:hint="Points"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/editStatus"
+    <Button
+        android:id="@+id/saveButton2"
+        style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editName"
-        android:hint="Status"
-        android:inputType="text" />
+        android:layout_marginBottom="38dp"
+        android:onClick="saveButtonClicked"
+        android:text="SAVE" />
 
     <EditText
-        android:id="@+id/editTag"
+        android:id="@+id/description_input2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editAssigned"
-        android:hint="Tag"
-        android:inputType="text" />
+        android:layout_below="@+id/name_input2"
+        android:ems="10"
+        android:hint="Description"
+        android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/editComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editTag"
-        android:hint="Commentario"
-        android:inputType="text" />
+    <Spinner
+        android:id="@+id/status_input2"
+        style="@style/SpinnerTheme"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:overlapAnchor="false"
+        android:spinnerMode="dialog" />
 
-    <EditText
-        android:id="@+id/editAssigned"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editPoints"
-        android:hint="Asignado a"
-        android:inputType="text" />
+        android:layout_below="@+id/description_input2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="Status"
+        android:textSize="18sp" />
 </RelativeLayout>

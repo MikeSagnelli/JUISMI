@@ -10,11 +10,10 @@
         android:id="@+id/email"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -25,7 +24,7 @@
         android:layout_below="@+id/email"
         android:layout_marginTop="17dp"
         android:ems="10"
-        android:hint="Nombre"
+        android:hint="@string/name"
         android:inputType="text" />
 
     <EditText
@@ -36,7 +35,7 @@
         android:layout_below="@+id/name"
         android:layout_marginTop="17dp"
         android:ems="10"
-        android:hint="Contraseña"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <EditText
@@ -47,20 +46,19 @@
         android:layout_below="@+id/password"
         android:layout_marginTop="17dp"
         android:ems="10"
-        android:hint="Confirmar contraseña"
+        android:hint="@string/confirm"
         android:inputType="textPassword" />
 
     <Button
         android:id="@+id/submit"
-        style="@android:style/Widget.Material.Light.Button.Borderless"
+        style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordConfirm"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
-        android:background="@color/colorPrimaryDark"
         android:onClick="submit"
-        android:text="Siguiente"
+        android:text="@string/register_button"
         android:textColor="#fff" />
 
     <TextView
@@ -68,19 +66,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="11dp"
-        android:layout_toStartOf="@+id/login"
-        android:text="¿Ya tienes una cuenta? " />
+        android:layout_alignStart="@+id/submit"
+        android:layout_marginBottom="17dp"
+        android:layout_marginStart="76dp"
+        android:text="@string/do_have" />
 
     <TextView
-        android:id="@+id/login"
+        android:id="@+id/loginLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/question"
         android:layout_alignBottom="@+id/question"
-        android:layout_alignEnd="@+id/submit"
-        android:layout_marginEnd="51dp"
-        android:text="Inicia Sesión"
+        android:layout_toEndOf="@+id/question"
+        android:text="@string/login_button"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold" />
 

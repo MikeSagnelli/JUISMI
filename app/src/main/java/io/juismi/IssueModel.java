@@ -2,130 +2,53 @@ package io.juismi;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-/**
- * Created by Ismael on 18/02/2018.
- */
+import java.util.List;
 
 public class IssueModel {
-    String name;
-    String description;
-    String status;
-    String tag;
-    String comment;
-    String AssignedTo;
-    int points;
-    //TagModel tag;
-    //ArrayList<CommentModel> commments;
-    //String AssignedTo;
-    //Date creationDate;
-    //int points;
 
-    String noComments;
-    String id;
+    private String name,
+                   description,
+                   status;
+    private int points;
+    private List<Integer> tagIDs;
 
-    public IssueModel(){}
-  
-    public String getName() {
-        return name;
+    public IssueModel(){
+        this.name = null;
+        this.description = null;
+        this.points = 0;
+        this.status = null;
+        this.tagIDs = new ArrayList<Integer>();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getAssignedTo() {
-        return AssignedTo;
-    }
-
-    public void setAssignedTo(String assignedTo) {
-        AssignedTo = assignedTo;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public String getNoComments() {
-        return noComments;
-    }
-
-    public void setNoComments(String noComments) {
-        this.noComments = noComments;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public IssueModel(String name, String noComments, int status){
-        this.name = name;
-        this.noComments = noComments;
-        this.setStatus(status);
-        this.id = id;
-    }
-
-    public IssueModel(String name, String description, String tag, String status, String comment, String assignedTo, int points) {
+    public IssueModel(String name, String description, int points, String status, List<Integer> tagIDs){
         this.name = name;
         this.description = description;
-        this.status = status;
-        this.tag = tag;
-        this.comment = comment;
-        this.AssignedTo = assignedTo;
         this.points = points;
+        this.status = status;
+        this.tagIDs = tagIDs;
     }
 
-    public void setStatus(int status){
-        if(status == 0){
-            this.status = "Status: To Do";
-        }
-        if(status == 1){
-            this.status = "Status: Doing";
-        }
-        if(status == 2){
-            this.status = "Status: Done";
-        }
+    public String getName(){return this.name;}
+
+    public String getDescription() {return this.description;}
+
+    public int getPoints(){return this.points;}
+
+    public String getStatusId(){return this.status;}
+
+    private List<Integer> getTagIDs(){return this.tagIDs;}
+
+    public void setName(String name){this.name = name;}
+
+    public void setDescription(String description){this.description = description;}
+
+    public void setPoints(int points){this.points = points;}
+
+    public void setStatusId(String status){this.status = status;}
+
+    public void setTagIDs(List<Integer> tagIDs){this.tagIDs = tagIDs;}
+
+    public void addInt(int a){
+        this.tagIDs.add(a);
     }
-
-
 }
