@@ -1,6 +1,5 @@
 package io.juismi;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +27,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //auth = FirebaseAuth.getInstance();
 
-        register = (TextView) findViewById(R.id.register);
-        login = (Button) findViewById(R.id.login);
+        register = (TextView) findViewById(R.id.registerLink);
+        login = (Button) findViewById(R.id.loginButton);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
 
@@ -44,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View v){
         String emailText = email.getText().toString(),
-                passwordText = password.getText().toString();
+               passwordText = password.getText().toString();
         if(emailText.equals("") || passwordText.equals("")){
             Toast.makeText(this, "Llena los campos", Toast.LENGTH_SHORT).show();
         } else{
