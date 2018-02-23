@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.mAuth = FirebaseAuth.getInstance();
+        this.mAuth.signOut();
         this.checkSession();
 
         this.register = (TextView) findViewById(R.id.register);

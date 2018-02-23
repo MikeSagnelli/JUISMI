@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ public class IssuesActivity extends AppCompatActivity {
 
     private ListView listView;
     private FloatingActionButton addIssue;
+    private Spinner status;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -30,11 +33,19 @@ public class IssuesActivity extends AppCompatActivity {
     private FirebaseAdapter adapter;
 
     private static final int REGISTER_ISSUE = 0;
+    private static final int ISSUE_DETAILS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issues);
+
+        this.status = (Spinner) findViewById(R.id.filter_status);
+
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_status, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.status.setAdapter(spinnerAdapter);
 
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
@@ -56,7 +67,7 @@ public class IssuesActivity extends AppCompatActivity {
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
                 ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
-                ((TextView)v.findViewById(R.id.storyPoints)).setText(String.valueOf(model.getPoints()));
+                ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
             }
         };
 
@@ -65,7 +76,10 @@ public class IssuesActivity extends AppCompatActivity {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.wtf("ayuda", "ayuda");
+                String key = adapter.getKey(i);
+                Intent intent = new Intent(IssuesActivity.this, IssueDetail.class);
+                intent.putExtra("issue_key", key);
+                startActivityForResult(intent, ISSUE_DETAILS);
             }
         });
     }
@@ -76,6 +90,12 @@ public class IssuesActivity extends AppCompatActivity {
         if(requestCode == REGISTER_ISSUE && resultCode == Activity.RESULT_OK){
 
             Toast.makeText(this, "Added issue", Toast.LENGTH_SHORT).show();
+        }
+        else if(requestCode == ISSUE_DETAILS && resultCode == Activity.RESULT_OK){
+            Toast.makeText(this, "Edited successfully", Toast.LENGTH_SHORT).show();
+        }
+        else if(requestCode == ISSUE_DETAILS && resultCode == 7){
+            Toast.makeText(this, "Deleted successfully", Toast.LENGTH_SHORT).show();
         }
     }
 }

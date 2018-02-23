@@ -135,6 +135,8 @@ public abstract class FirebaseAdapter<T> extends BaseAdapter {
         return this.models.get(i);
     }
 
+    public String getKey(int i){return this.keys.get(i);}
+
     @Override
     public long getItemId(int i) {
         return i;
