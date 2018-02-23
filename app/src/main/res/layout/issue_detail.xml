@@ -18,19 +18,17 @@
         android:id="@+id/statusIssue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/nameIssue"
-        android:layout_alignBottom="@+id/nameIssue"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="34dp"
+        android:layout_alignStart="@+id/nameIssue"
+        android:layout_below="@+id/nameIssue"
         android:text="Status: status" />
 
     <TextView
         android:id="@+id/descriptionIssue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/nameIssue"
-        android:layout_below="@+id/nameIssue"
-        android:layout_marginTop="27dp"
+        android:layout_alignStart="@+id/statusIssue"
+        android:layout_below="@+id/statusIssue"
+        android:layout_marginTop="13dp"
         android:text="Description" />
 
     <ListView
@@ -40,5 +38,41 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/descriptionIssue"
         android:layout_marginTop="138dp" />
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/descriptionIssue"
+        android:layout_marginTop="86dp"
+        android:text="Edit Issue" />
+
+    <TextView
+        android:id="@+id/tagIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/assignedIssue"
+        android:layout_marginEnd="23dp"
+        android:layout_toStartOf="@+id/pointsIssue"
+        android:text="Tag" />
+
+    <TextView
+        android:id="@+id/assignedIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameIssue"
+        android:layout_toStartOf="@+id/pointsIssue"
+        android:text="Asignado a " />
+
+    <TextView
+        android:id="@+id/pointsIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tagIssue"
+        android:layout_alignBottom="@+id/tagIssue"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp"
+        android:text="4" />
 
 </RelativeLayout>

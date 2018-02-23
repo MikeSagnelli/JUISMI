@@ -20,6 +20,7 @@
         <activity android:name=".RegisterActivity">
         </activity>
         <activity android:name=".IssueDetail"/>
+        <activity android:name=".EditIssue"/>
     </application>
 
 </manifest>
