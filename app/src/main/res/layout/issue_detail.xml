@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nameIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:text="Issue Name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/statusIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nameIssue"
+        android:layout_alignBottom="@+id/nameIssue"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:text="Status: status"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/descriptionIssue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/nameIssue"
+        android:layout_below="@+id/nameIssue"
+        android:layout_marginTop="12dp"
+        android:text="Description" />
+
+    <Button
+        android:id="@+id/editButton"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/storyPoints"
+        android:layout_marginTop="64dp"
+        android:text="Edit Issue" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editButton"
+        android:text="DELETE ISSUE" />
+
+    <TextView
+        android:id="@+id/storyPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/descriptionIssue"
+        android:layout_below="@+id/descriptionIssue"
+        android:layout_marginTop="20dp"
+        android:text="Story Points:"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp" />
+
+</RelativeLayout>

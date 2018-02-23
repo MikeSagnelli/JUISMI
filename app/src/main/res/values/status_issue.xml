@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="status_arrays">
+        <item>To Do</item>
+        <item>Doing</item>
+        <item>Done</item>
+    </string-array>
+    <string-array name="array_status">
+        <item>All</item>
+        <item>To Do</item>
+        <item>Doing</item>
+        <item>Done</item>
+    </string-array>
+
+</resources>

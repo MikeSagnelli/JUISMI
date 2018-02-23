@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.juismi.RegisterActivity">
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/email"
+        android:layout_below="@+id/email"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/name"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/passwordConfirm"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/password"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="@string/confirm"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/submit"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordConfirm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:onClick="submit"
+        android:text="@string/register_button"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/submit"
+        android:layout_marginBottom="17dp"
+        android:layout_marginStart="76dp"
+        android:text="@string/do_have" />
+
+    <TextView
+        android:id="@+id/loginLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/question"
+        android:layout_alignBottom="@+id/question"
+        android:layout_toEndOf="@+id/question"
+        android:text="@string/login_button"
+        android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold" />
+
+</RelativeLayout>

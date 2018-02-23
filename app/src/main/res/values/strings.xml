@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">JUISMI</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_button">LOG IN</string>
+    <string name="register_button">SIGN UP</string>
+    <string name="about">An easy, free, and visual app for organizing everything with everyone.</string>
+    <string name="have_account">Don\'t have an account?</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="do_have">Already have an account?</string>
+    <string name="name">Name</string>
+    <string name="confirm">Confirm Password</string>
+    <string name="title_activity_issues_view">IssuesView</string>
+    <string name="logout">LOG OUT</string>
+</resources>
