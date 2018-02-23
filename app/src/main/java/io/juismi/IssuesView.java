@@ -12,7 +12,7 @@ import java.util.List;
 
 public class IssuesView extends AppCompatActivity {
     private ListView listView;
-    ArrayList<IssueModel> issueModels;
+    public static ArrayList<IssueModel> issueModels;
     private static CustomViewAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +21,10 @@ public class IssuesView extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listview);
 
         issueModels = new ArrayList<>();
-        issueModels.add(new IssueModel("Listview con Issues","4", "STATUS: DOING"));
-        issueModels.add(new IssueModel("Adapter para Listview","5", "STATUS: TROUBLE"));
-        issueModels.add(new IssueModel("Definir vistas","6", "STATUS: DONE"));
-        issueModels.add(new IssueModel("Mockups","7", "STATUS: DONE"));
+        issueModels.add(new IssueModel("Listview con Issues","4", 2));
+        issueModels.add(new IssueModel("Adapter para Listview","5", 0));
+        issueModels.add(new IssueModel("Definir vistas","6", 1));
+        issueModels.add(new IssueModel("Mockups","7", 1));
 
         adapter = new CustomViewAdapter(issueModels, getApplicationContext());
 
@@ -35,10 +35,9 @@ public class IssuesView extends AppCompatActivity {
                 Log.wtf("ayuda", "ayuda");
             }
         });
+    }
 
-
-
-
-
+    public static void registerIssue(IssueModel issue){
+        issueModels.add(issue);
     }
 }

@@ -64,7 +64,7 @@ public class CustomViewAdapter extends ArrayAdapter<IssueModel> implements View.
             viewHolder.txtNoComments = (TextView) convertView.findViewById(R.id.noComments);
             viewHolder.txtStatus = (TextView) convertView.findViewById(R.id.issueStatus);
             viewHolder.tag = (ImageView) convertView.findViewById(R.id.tag);
-            //viewHolder.commentIcon = (ImageView) convertView.findViewById(R.id.comment);
+            viewHolder.commentIcon = (ImageView) convertView.findViewById(R.id.comment);
 
 
 
@@ -83,7 +83,7 @@ public class CustomViewAdapter extends ArrayAdapter<IssueModel> implements View.
         viewHolder.txtNoComments.setText(issueModel.getNoComments());
         viewHolder.txtStatus.setText(issueModel.getStatus());
         viewHolder.tag.setTag(position);
-        //viewHolder.commentIcon.setTag(position);
+        viewHolder.commentIcon.setTag(position);
 
         return convertView;
     }

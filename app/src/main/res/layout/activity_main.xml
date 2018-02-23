@@ -12,11 +12,23 @@
         android:layout_height="88dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Button"
+        android:text="ListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="16dp"
-        android:onClick="changeToView"/>
+        android:onClick="changeToListView"/>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="152dp"
+        android:layout_height="88dp"
+        android:layout_alignStart="@+id/button"
+        android:layout_below="@+id/button"
+        android:layout_marginTop="25dp"
+        android:onClick="changeToRegister"
+        android:text="RegisterView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
 
 </RelativeLayout>

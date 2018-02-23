@@ -1,0 +1,10 @@
+<resources>
+
+    <string-array name="tag_arrays">
+        <item>Tag1</item>
+        <item>Tag2</item>
+        <item>Tag3</item>
+        <item>Tag4</item>
+    </string-array>
+
+</resources>
