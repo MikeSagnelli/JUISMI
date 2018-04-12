@@ -1,6 +1,7 @@
 package io.juismi;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -29,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFragmentInteractionListener{
+public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFragmentInteractionListener, RegisterTagFragment.OnFragmentInteractionListener{
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -37,6 +38,7 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
     //private Spinner status;
     private FirebaseAdapter mAdapter;
     private  TagFragment tagFragment;
+    private RegisterTagFragment registerTagFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.container, this.tagFragment, "tagsList");
+        //ft.add(R.id.container, this.registerTagFragment, "tagFragment");
         ft.commit();
 
    }
@@ -80,6 +83,19 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
         Intent result = new Intent();
         setResult(Activity.RESULT_OK, result);
         finish();
+    }
+
+    public void addTag(View v){
+        FragmentManager fm = getFragmentManager();
+        Fragment f = fm.findFragmentByTag("tagsList");
+
+        if(f != null){
+            FragmentTransaction ft = fm.beginTransaction();
+            this.registerTagFragment = new RegisterTagFragment();
+            ft.remove(f);
+            ft.add(R.id.container, this.registerTagFragment, "registerTag");
+            ft.commit();
+        }
     }
 
     @Override

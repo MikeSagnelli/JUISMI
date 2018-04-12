@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,8 @@ public class RegisterTagFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
+    private Button submit, cancel;
+    private EditText tagName;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,13 +64,30 @@ public class RegisterTagFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register_tag, container, false);
+        View v = inflater.inflate(R.layout.fragment_register_tag, container, false);
+
+        this.tagName = (EditText) v.findViewById(R.id.tag_input);
+        this.cancel = (Button) v.findViewById(R.id.cancel);
+        this.submit = (Button) v.findViewById(R.id.saveTagButton);
+        this.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            submitTag();
+            }
+        });
+        this.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onFragmentInteraction();
+            }
+        });
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -88,12 +108,15 @@ public class RegisterTagFragment extends Fragment {
         mListener = null;
     }
 
-    public void saveTagButtonClicked(View v){
+    private void submitTag(){
+        //HARDCODED
         int color = Color.parseColor("#FF33B5E5");
-        String tagName = ((EditText) v.findViewById(R.id.tag_input)).getText().toString();
-        TagModel newTag = new TagModel(color, tagName);
 
-        DatabaseReference ref = mDatabase.child(user.getUid()).child("tags").push();
+        String name = this.tagName.getText().toString();
+        TagModel newTag = new TagModel(color, name);
+
+        //HARDCODED
+        DatabaseReference ref = mDatabase.child("boards").child("-L9sfw0CIdrHfXEEtdHQ").child("tags").push();
         ref.setValue(newTag);
         String tagID = ref.getKey();
         Log.d("TAG",tagID);
@@ -101,7 +124,7 @@ public class RegisterTagFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 
 }

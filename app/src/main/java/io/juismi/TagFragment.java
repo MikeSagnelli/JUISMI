@@ -82,14 +82,16 @@ public class TagFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tag, container, false);
         this.tagsList = (ListView) v.findViewById(R.id.listTags);
-        this.adapter = new FirebaseAdapter<TagModel>(this.mDatabase.child(this.user.getUid()).child("tags"), TagModel.class,R.layout.tag_row, getActivity()) {
+
+        //HARDCODED
+        this.adapter = new FirebaseAdapter<TagModel>(this.mDatabase.child("boards").child("-L9sfw0CIdrHfXEEtdHQ").child("tags"), TagModel.class,R.layout.tag_row, getActivity()) {
             @Override
             protected void populateView(View v, TagModel model) {
                 checkBox = v.findViewById(R.id.name);
                 checkBox.setText(model.getName());
                 String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
-                ImageView imageView = (ImageView) v.findViewById(R.id.color);
-                imageView.setBackgroundColor(Color.parseColor(hexColor));
+                //ImageView imageView = (ImageView) v.findViewById(R.id.color);
+                checkBox.setBackgroundColor(Color.parseColor(hexColor));
                 Log.d("color", hexColor);
             }
         };
