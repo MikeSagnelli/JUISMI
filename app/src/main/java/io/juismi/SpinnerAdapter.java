@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by zubut on 4/11/18.
+ * Created by juliaorduno on 4/11/18.
  */
 
 public class SpinnerAdapter extends BaseAdapter
@@ -47,12 +47,11 @@ public class SpinnerAdapter extends BaseAdapter
     @Override
     public View getView(int pos, View view, ViewGroup parent)
     {
-        LayoutInflater inflater=LayoutInflater.from(context);
-        view=inflater.inflate(android.R.layout.simple_spinner_dropdown_item, null);
-        TextView txv=(TextView)view.findViewById(android.R.id.text1);
+        /*LayoutInflater inflater=LayoutInflater.from(context);
+        view=inflater.inflate(R.layout.tag_row, null);
+        TextView txv=(TextView)view.findViewById(R.id.textViewTag);
         txv.setBackgroundColor(colors.get(pos));
-        txv.setTextSize(20f);
-        txv.setText("Text  "+pos);
+        txv.setText("Text  "+pos);*/
         return view;
     }
 
