@@ -2,6 +2,7 @@ package io.juismi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ public class ToDoFragment extends Fragment {
     private FirebaseUser user;
     private DatabaseReference db;
     private FirebaseAdapter adapter;
+    private String boardID;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
@@ -41,6 +43,7 @@ public class ToDoFragment extends Fragment {
 
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
+        this.boardID = getArguments().getString("board_key");
 
         this.db = FirebaseDatabase.getInstance().getReference();
 
@@ -50,11 +53,12 @@ public class ToDoFragment extends Fragment {
         this.addIssue.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), RegisterIssue.class);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, REGISTER_ISSUE);
             }
         });
 
-        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child(this.user.getUid()).child("issues").orderByChild("statusId").equalTo("To Do"), IssueModel.class,R.layout.list_issue, getActivity()){
+        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("board_status").equalTo(this.boardID+"_To Do"), IssueModel.class,R.layout.list_issue, getActivity()){
             @Override
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
@@ -71,6 +75,7 @@ public class ToDoFragment extends Fragment {
                 String key = adapter.getKey(i);
                 Intent intent = new Intent(getActivity(), IssueDetail.class);
                 intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, ISSUE_DETAILS);
             }
         });

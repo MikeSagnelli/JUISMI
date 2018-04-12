@@ -1,22 +1,21 @@
 package io.juismi;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.support.design.widget.FloatingActionButton;
-        import android.support.v4.app.Fragment;
-        import android.os.Bundle;
-        import android.support.annotation.Nullable;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.ListView;
-        import android.widget.TextView;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseUser;
-        import com.google.firebase.database.DatabaseReference;
-        import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by JARVIS on 11/04/2018.
@@ -31,6 +30,7 @@ public class AllFragment extends Fragment{
     private FirebaseUser user;
     private DatabaseReference db;
     private FirebaseAdapter adapter;
+    private String boardID;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
@@ -42,6 +42,7 @@ public class AllFragment extends Fragment{
 
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
+        this.boardID = getArguments().getString("board_key");
 
         this.db = FirebaseDatabase.getInstance().getReference();
 
@@ -51,11 +52,12 @@ public class AllFragment extends Fragment{
         this.addIssue.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), RegisterIssue.class);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, REGISTER_ISSUE);
             }
         });
-
-        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child(this.user.getUid()).child("issues"), IssueModel.class,R.layout.list_issue, getActivity()){
+        this.db.child("tags").orderByChild("boardID").equalTo(this.boardID);
+        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("boardID").equalTo(this.boardID), IssueModel.class,R.layout.list_issue, getActivity()){
             @Override
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
@@ -72,6 +74,7 @@ public class AllFragment extends Fragment{
                 String key = adapter.getKey(i);
                 Intent intent = new Intent(getActivity(), IssueDetail.class);
                 intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, ISSUE_DETAILS);
             }
         });

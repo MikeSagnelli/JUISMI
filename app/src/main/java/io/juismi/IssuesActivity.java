@@ -1,6 +1,7 @@
 package io.juismi;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 public class IssuesActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
+    private String boardID;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
@@ -20,6 +22,9 @@ public class IssuesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issues);
 
+        Intent intent = getIntent();
+        this.boardID = intent.getStringExtra("board_key");
+
         viewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
 
@@ -28,11 +33,21 @@ public class IssuesActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager){
+        Bundle b = new Bundle();
+        b.putString("board_key", this.boardID);
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AllFragment(), "All");
-        adapter.addFragment(new ToDoFragment(), "To Do");
-        adapter.addFragment(new InProgressFragment(), "In Progress");
-        adapter.addFragment(new DoneFragment(), "Done");
+        Fragment all = new AllFragment();
+        Fragment toDo = new ToDoFragment();
+        Fragment inProgress = new InProgressFragment();
+        Fragment done = new DoneFragment();
+        all.setArguments(b);
+        toDo.setArguments(b);
+        inProgress.setArguments(b);
+        done.setArguments(b);
+        adapter.addFragment(all, "All");
+        adapter.addFragment(toDo, "To Do");
+        adapter.addFragment(inProgress, "In Progress");
+        adapter.addFragment(done, "Finished");
         viewPager.setAdapter(adapter);
     }
 
