@@ -25,6 +25,8 @@ public class IssuesActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
     }
 
     private void setupViewPager(ViewPager viewPager){

@@ -7,15 +7,17 @@ package io.juismi;
 public class TagModel {
     private int color;
     private String name;
+    private String boardID;
 
     public TagModel(){
         this.color = 0;
         this.name = null;
     }
 
-    public TagModel(int color, String name){
+    public TagModel(int color, String name, String board){
         this.color = color;
         this.name = name;
+        this.boardID = board;
     }
 
     public void setColor(int color) {

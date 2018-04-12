@@ -35,34 +35,28 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    //private Spinner status;
     private FirebaseAdapter mAdapter;
     private  TagFragment tagFragment;
     private RegisterTagFragment registerTagFragment;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_issue);
 
-        //this.status = (Spinner) findViewById(R.id.status_input);
-
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
-
-        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.status_arrays, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
-        //this.status.setAdapter(adapter);
-
-
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        this.bundle = new Bundle();
+        this.bundle.putString("boardID", BoardsActivity.boardID);
         this.tagFragment = new TagFragment();
+        this.tagFragment.setArguments(this.bundle);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.container, this.tagFragment, "tagsList");
-        //ft.add(R.id.container, this.registerTagFragment, "tagFragment");
+
         ft.commit();
 
    }
@@ -92,6 +86,7 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
         if(f != null){
             FragmentTransaction ft = fm.beginTransaction();
             this.registerTagFragment = new RegisterTagFragment();
+            this.registerTagFragment.setArguments(this.bundle);
             ft.remove(f);
             ft.add(R.id.container, this.registerTagFragment, "registerTag");
             ft.commit();
@@ -100,6 +95,11 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction() {
 
     }
 }

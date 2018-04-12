@@ -18,12 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterTagFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private DatabaseReference mDatabase;
@@ -31,29 +26,17 @@ public class RegisterTagFragment extends Fragment {
     private FirebaseAuth mAuth;
     private Button submit, cancel;
     private EditText tagName;
+    private String boardID;
 
     private OnFragmentInteractionListener mListener;
 
-    public RegisterTagFragment() {
-        // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static RegisterTagFragment newInstance(String param1, String param2) {
-        RegisterTagFragment fragment = new RegisterTagFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public RegisterTagFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            boardID = getArguments().getString("boardID");
         }
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
@@ -84,12 +67,6 @@ public class RegisterTagFragment extends Fragment {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction();
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -102,28 +79,22 @@ public class RegisterTagFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     private void submitTag(){
         //HARDCODED
         int color = Color.parseColor("#FF33B5E5");
 
         String name = this.tagName.getText().toString();
-        TagModel newTag = new TagModel(color, name);
+        TagModel newTag = new TagModel(color, name, BoardsActivity.boardID);
 
         //HARDCODED
-        DatabaseReference ref = mDatabase.child("boards").child("-L9sfw0CIdrHfXEEtdHQ").child("tags").push();
-        ref.setValue(newTag);
-        String tagID = ref.getKey();
-        Log.d("TAG",tagID);
+        DatabaseReference tagref = mDatabase.child("tags").push();
+        DatabaseReference boardref = mDatabase.child("boards").child(this.boardID).child("tags").push();
+        tagref.setValue(newTag);
+        boardref.setValue(newTag);
+        String tagID = tagref.getKey();
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 
