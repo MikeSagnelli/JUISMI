@@ -6,24 +6,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class IssuesActivity extends AppCompatActivity {
 
-    private SectionsPageAdapter sectionsPageAdapter;
     private ViewPager viewPager;
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private DatabaseReference db;
-    private FirebaseAdapter adapter;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
@@ -38,20 +25,6 @@ public class IssuesActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        this.mAuth = FirebaseAuth.getInstance();
-        this.user = mAuth.getCurrentUser();
-
-        this.db = FirebaseDatabase.getInstance().getReference();
-
-        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child(this.user.getUid()).child("issues"), IssueModel.class,R.layout.list_issue, this){
-            @Override
-            protected void populateView(View v, IssueModel model) {
-                ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
-                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
-                ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
-            }
-        };
     }
 
     private void setupViewPager(ViewPager viewPager){
