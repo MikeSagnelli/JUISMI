@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REGISTER_ACTIVITY = 0;
     private static final int LOGIN_ACTIVITY = 1;
     private static final int ISSUES_ACTIVITY = 2;
+    private static final int BOARDS_ACTIVITY = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = this.mAuth.getCurrentUser();
 
         if(currentUser != null){
-            Intent intent = new Intent(this, IssuesActivity.class);
+            Intent intent = new Intent(this, BoardsActivity.class);
             intent.putExtra("userName", currentUser.getDisplayName());
-            startActivityForResult(intent, ISSUES_ACTIVITY);
+            startActivityForResult(intent, BOARDS_ACTIVITY);
         }
     }
 
