@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 public class TagDialogFragment extends Dialog{
 
-    private  Activity activity;
+    private Activity activity;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private FirebaseAuth mAuth;

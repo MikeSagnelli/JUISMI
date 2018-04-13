@@ -41,6 +41,7 @@ public class AllFragment extends Fragment{
     private FirebaseAdapter adapter, tagsAdapter, tagRowAdapter;
     private String boardID;
     private TagFilterDialog tfd;
+    private UserFilterDialog ufd;
     private AdapterView.OnItemClickListener listener, listener2;
 
     private static final int REGISTER_ISSUE = 0;
@@ -104,6 +105,18 @@ public class AllFragment extends Fragment{
                     });
                 } else if(i == 0){
                     setAdapter("boardID", boardID);
+                } else if(i == 1){
+                    ufd = new UserFilterDialog(getActivity(), boardID);
+                    ufd.show();
+                    ufd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            String selectedUser = ufd.getSelectedUser();
+                            if(selectedUser != null){
+                                filterByUser(selectedUser);
+                            }
+                        }
+                    });
                 }
             }
 
@@ -167,6 +180,29 @@ public class AllFragment extends Fragment{
         this.listView.setAdapter(this.adapter);
 
         this.tagsAdapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("tags/"+tagID).equalTo(true), IssueModel.class,R.layout.issues_tag, getActivity()){
+            @Override
+            protected void populateView(View v, IssueModel model) {
+                int index = getModels().indexOf(model);
+                String key = getKey(index);
+                ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
+                fillTags(key, tagsList);
+            }
+        };
+        this.tagsList.setAdapter(this.tagsAdapter);
+    }
+
+    private void filterByUser(String userID){
+        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("userID").equalTo(userID), IssueModel.class,R.layout.list_issue, getActivity()){
+            @Override
+            protected void populateView(View v, IssueModel model) {
+                ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
+                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
+                ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
+            }
+        };
+        this.listView.setAdapter(this.adapter);
+
+        this.tagsAdapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("userID").equalTo(userID), IssueModel.class,R.layout.issues_tag, getActivity()){
             @Override
             protected void populateView(View v, IssueModel model) {
                 int index = getModels().indexOf(model);

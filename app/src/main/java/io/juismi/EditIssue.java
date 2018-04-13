@@ -1,6 +1,7 @@
 package io.juismi;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,12 +39,13 @@ public class EditIssue extends AppCompatActivity {
     private DatabaseReference db;
     private Spinner status;
     private String key,
-                   boardID;
+                   boardID, userID;
     private TextView name, description, points;
     private FirebaseAdapter adapter;
     private ArrayList<String> tags, allTags;
     private ArrayList<CheckBox> checkBoxes;
     private ListView tagsList;
+    private AssignDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class EditIssue extends AppCompatActivity {
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
+        this.dialog =  new AssignDialog(this.boardID, this);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.status_arrays, android.R.layout.simple_spinner_item);
@@ -80,6 +83,9 @@ public class EditIssue extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
+                    if(map.get("userID") != null){
+                        userID = map.get("userID").toString();
+                    }
                     switch(map.get("status").toString()){
                         case "To Do":
                             status.setSelection(0);
@@ -115,6 +121,7 @@ public class EditIssue extends AppCompatActivity {
         postValues.put("description", ((EditText) findViewById(R.id.description_input2)).getText().toString());
         postValues.put("status", status);
         postValues.put("points", Integer.parseInt(((EditText) findViewById(R.id.points_input2)).getText().toString()));
+        postValues.put("userID", this.userID);
 
         db.child("issues").child(this.key).updateChildren(postValues);
         db.child("issues").child(this.key).child("board_status").setValue(this.boardID+"_"+status);
@@ -159,5 +166,15 @@ public class EditIssue extends AppCompatActivity {
             db.child("tags").child(tagID).child("issues").child(issueID).setValue(selected);
         }
 
+    }
+
+    public void assignUser(View v){
+        this.dialog.show();
+        this.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                userID = dialog.getSelectedUser();
+            }
+        });
     }
 }

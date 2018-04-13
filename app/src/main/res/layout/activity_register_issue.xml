@@ -87,5 +87,16 @@
         android:text="add tag "
         android:textSize="12sp" />
 
+    <Button
+        android:id="@+id/button2"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/name_input"
+        android:layout_below="@+id/description_input"
+        android:onClick="assignUser"
+        android:text="assign"
+        android:textSize="12sp" />
+
 
 </RelativeLayout>

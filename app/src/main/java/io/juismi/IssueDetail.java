@@ -41,8 +41,8 @@ public class IssueDetail extends AppCompatActivity {
     private Query query;
     private IssueModel im;
     private String key,
-                   boardID;
-    private TextView name, description, status, points;
+                   boardID, userID;
+    private TextView name, description, status, points, userTv;
     private FirebaseAdapter adapter;
     private ArrayList<String> tags;
 
@@ -66,6 +66,7 @@ public class IssueDetail extends AppCompatActivity {
         status = (TextView) findViewById(R.id.statusIssue);
         points = (TextView) findViewById(R.id.storyPoints);
         listView = (ListView) findViewById(R.id.tagLstView);
+        userTv = (TextView) findViewById(R.id.user);
 
         this.query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -77,6 +78,11 @@ public class IssueDetail extends AppCompatActivity {
                     description.setText(map.get("description").toString());
                     status.setText("Status: " + map.get("status").toString());
                     points.setText("Story Points:" + map.get("points").toString());
+
+                    if(map.get("userID") != null){
+                        userID = map.get("userID").toString();
+                        setUserName(userID);
+                    }
                 }
             }
 
@@ -141,6 +147,24 @@ public class IssueDetail extends AppCompatActivity {
 
         this.listView.setAdapter(this.adapter);
 
+    }
+
+    private void setUserName(String userID){
+        Query q = this.db.child("users/" + userID);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    HashMap map = (HashMap)dataSnapshot.getValue();
+                    userTv.setText("User: " + map.get("name").toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

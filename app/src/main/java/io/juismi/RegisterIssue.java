@@ -37,11 +37,12 @@ import java.util.List;
 public class RegisterIssue extends AppCompatActivity{
 
     private DatabaseReference mDatabase;
-    private String boardID;
+    private String boardID, userID;
     private List<String> tags;
     private ListView tagsList;
     private FirebaseAdapter<TagModel> adapter;
     private ArrayList<CheckBox> checkBoxes;
+    private AssignDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class RegisterIssue extends AppCompatActivity{
 
         this.tagsList = (ListView) findViewById(R.id.tagslistView);
         this.setListView();
+
+        this.dialog = new AssignDialog(this.boardID, this);
    }
 
     public void saveButtonClicked(View v){
@@ -64,7 +67,7 @@ public class RegisterIssue extends AppCompatActivity{
                 ((EditText) findViewById(R.id.description_input)).getText().toString(),
                 Integer.parseInt(((EditText) findViewById(R.id.points_input)).getText().toString()),
                 "To Do",
-                this.boardID
+                this.boardID, this.userID
         );
 
         DatabaseReference ref = mDatabase.child("issues").push();
@@ -81,12 +84,22 @@ public class RegisterIssue extends AppCompatActivity{
     }
 
     public void addTag(View v){
-        TagDialogFragment dialog = new TagDialogFragment(this.boardID, this);
-        dialog.show();
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        TagDialogFragment tdf = new TagDialogFragment(this.boardID, this);
+        tdf.show();
+        tdf.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 setListView();
+            }
+        });
+    }
+
+    public void assignUser(View v){
+        this.dialog.show();
+        this.dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                userID = dialog.getSelectedUser();
             }
         });
     }
