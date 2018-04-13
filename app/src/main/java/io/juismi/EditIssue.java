@@ -80,7 +80,7 @@ public class EditIssue extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
-                    switch(map.get("statusId").toString()){
+                    switch(map.get("status").toString()){
                         case "To Do":
                             status.setSelection(0);
                             break;

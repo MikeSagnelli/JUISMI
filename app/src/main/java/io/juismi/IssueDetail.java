@@ -74,7 +74,7 @@ public class IssueDetail extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
-                    status.setText("Status: " + map.get("statusId").toString());
+                    status.setText("Status: " + map.get("status").toString());
                     points.setText("Story Points:" + map.get("points").toString());
                 }
             }

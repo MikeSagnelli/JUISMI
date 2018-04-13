@@ -72,7 +72,7 @@ public class RegisterIssue extends AppCompatActivity{
         DatabaseReference ref = mDatabase.child("issues").push();
         String issueID = ref.getKey();
         ref.setValue(newIssue);
-        ref.child("board_status").setValue(this.boardID+"_"+status);
+        ref.child("board_status").setValue(this.boardID+"_To Do");
 
         mDatabase.child("boards").child(this.boardID).child("issues").child(issueID).setValue(true);
         this.saveTags(issueID);

@@ -65,7 +65,6 @@ public class BoardsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String key = adapter.getKey(position);
-                Log.d("hey", key);
                 Intent intent = new Intent(BoardsActivity.this, IssuesActivity.class);
                 intent.putExtra("board_key", key);
                 startActivityForResult(intent, ISSUES);
