@@ -74,8 +74,9 @@ public class AssignDialog extends Dialog {
         this.checkBoxes = new ArrayList<>();
         this.usersIDs = new ArrayList<>();
         this.adapter = new FirebaseAdapter<UserModel>(this.mDatabase.child("users").orderByChild("boards/"+this.boardID).equalTo(true), UserModel.class,R.layout.tag_row, this.activity) {
+
             @Override
-            protected void populateView(View v, TagModel model) {
+            protected void populateView(View v, UserModel model) {
                 int index = getModels().indexOf(model);
                 String key = getKey(index);
                 usersIDs.add(key);

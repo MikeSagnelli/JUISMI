@@ -67,7 +67,7 @@ public class RegisterIssue extends AppCompatActivity{
                 ((EditText) findViewById(R.id.description_input)).getText().toString(),
                 Integer.parseInt(((EditText) findViewById(R.id.points_input)).getText().toString()),
                 "To Do",
-                this.boardID, this.userID;
+                this.boardID, this.userID
         );
 
         DatabaseReference ref = mDatabase.child("issues").push();
