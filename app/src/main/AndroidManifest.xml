@@ -23,7 +23,11 @@
         <activity android:name=".RegisterIssue" />
         <activity android:name=".IssueDetail" />
         <activity android:name=".EditIssue" />
-        <activity android:name=".IssuesActivity"></activity>
+        <activity android:name=".IssuesActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
