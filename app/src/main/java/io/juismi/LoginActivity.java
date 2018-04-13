@@ -11,6 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,10 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private FirebaseAuth mAuth;
 
+    private CallbackManager callbackManager;
+
     private final int REGISTER_ACTIVITY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        callbackManager = CallbackManager.Factory.create();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
@@ -49,9 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v){
         String emailText = email.getText().toString(),
                passwordText = password.getText().toString();
-
-        emailText = "juliapaola97@gmail.com";
-        passwordText = "cajitadorada27";
 
         if(emailText.equals("") || passwordText.equals("")){
             Toast.makeText(this, "Fill with credentials", Toast.LENGTH_SHORT).show();
