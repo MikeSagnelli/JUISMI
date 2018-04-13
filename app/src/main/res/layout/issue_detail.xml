@@ -65,4 +65,29 @@
         android:textColor="@color/colorPrimary"
         android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/storyPoints"
+        android:layout_below="@+id/storyPoints"
+        android:text="User: "
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/tagContainer"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignEnd="@+id/statusIssue"
+        android:layout_alignTop="@+id/descriptionIssue">
+
+        <ListView
+            android:id="@+id/tagLstView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/tagContainer"
+            android:layout_alignTop="@+id/tagContainer" />
+    </RelativeLayout>
+
 </RelativeLayout>

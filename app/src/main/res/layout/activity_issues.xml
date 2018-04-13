@@ -1,40 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.juismi.IssuesActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <Spinner
-        android:id="@+id/filter_status"
-        style="@style/SpinnerTheme"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-    <ListView
-        android:id="@+id/issuesList"
+    <include
+        layout="@layout/app_bar_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/filter_status" />
+        android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addIssue"
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="11dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/addplusicon"
-        tools:layout_editor_absoluteX="326dp"
-        tools:layout_editor_absoluteY="453dp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_home"
+        app:menu="@menu/activity_home_drawer" />
 
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

@@ -2,13 +2,17 @@ package io.juismi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -35,8 +40,11 @@ public class IssueDetail extends AppCompatActivity {
     private FirebaseUser user;
     private Query query;
     private IssueModel im;
-    private String key;
-    private TextView name, description, status, points;
+    private String key,
+                   boardID, userID;
+    private TextView name, description, status, points, userTv;
+    private FirebaseAdapter adapter;
+    private ArrayList<String> tags;
 
     private static final int EDIT_ISSUE = 0;
 
@@ -48,14 +56,17 @@ public class IssueDetail extends AppCompatActivity {
         Intent intent = getIntent();
         this.mAuth = FirebaseAuth.getInstance();
         this.key = intent.getStringExtra("issue_key");
+        this.boardID = intent.getStringExtra("board_key");
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
-        this.query = db.child(this.user.getUid()).child("issues").child(key);
+        this.query = db.child("issues").child(key);
 
         name = (TextView) findViewById(R.id.nameIssue);
         description = (TextView) findViewById(R.id.descriptionIssue);
         status = (TextView) findViewById(R.id.statusIssue);
         points = (TextView) findViewById(R.id.storyPoints);
+        listView = (ListView) findViewById(R.id.tagLstView);
+        userTv = (TextView) findViewById(R.id.user);
 
         this.query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,8 +76,13 @@ public class IssueDetail extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
-                    status.setText("Status: " + map.get("statusId").toString());
+                    status.setText("Status: " + map.get("status").toString());
                     points.setText("Story Points:" + map.get("points").toString());
+
+                    if(map.get("userID") != null){
+                        userID = map.get("userID").toString();
+                        setUserName(userID);
+                    }
                 }
             }
 
@@ -85,6 +101,8 @@ public class IssueDetail extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(IssueDetail.this, EditIssue.class);
                 intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
+                intent.putStringArrayListExtra("tags", tags);
                 startActivityForResult(intent, EDIT_ISSUE);
             }
         });
@@ -92,12 +110,15 @@ public class IssueDetail extends AppCompatActivity {
         boton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                db.child(user.getUid()).child("issues").child(key).removeValue();
+                db.child("boards").child(boardID).child("issues").child(key).removeValue();
+                db.child("issues").child(key).removeValue();
                 Intent result = new Intent();
                 setResult(7, result);
                 finish();
             }
         });
+
+        this.setTags();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,4 +131,40 @@ public class IssueDetail extends AppCompatActivity {
             finish();
         }
     }
+
+    private void setTags(){
+        this.tags = new ArrayList<>();
+        this.adapter = new FirebaseAdapter<TagModel>(this.db.child("tags").orderByChild("issues/"+this.key).equalTo(true), TagModel.class,R.layout.detail_tag_row, this) {
+            @Override
+            protected void populateView(View v, TagModel model) {
+                RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.rowLayout);
+                int index = getModels().indexOf(model);
+                tags.add(getKey(index));
+                String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
+                layout.setBackgroundColor(Color.parseColor(hexColor));
+            }
+        };
+
+        this.listView.setAdapter(this.adapter);
+
+    }
+
+    private void setUserName(String userID){
+        Query q = this.db.child("users/" + userID);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    HashMap map = (HashMap)dataSnapshot.getValue();
+                    userTv.setText("User: " + map.get("name").toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

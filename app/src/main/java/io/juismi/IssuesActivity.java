@@ -2,86 +2,94 @@ package io.juismi;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+public class IssuesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-public class IssuesActivity extends AppCompatActivity {
-
-    private ListView listView;
-    private FloatingActionButton addIssue;
-    private Spinner status;
+    private ViewPager viewPager;
+    private String boardID;
+    private String userName;
+    private TextView name;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference db;
-    private FirebaseAdapter adapter;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
+    private static final int CALENDAR = 2;
+    private static final int COLLABORATORS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issues);
-
-        this.status = (Spinner) findViewById(R.id.filter_status);
-
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_status, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.status.setAdapter(spinnerAdapter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
-
         this.db = FirebaseDatabase.getInstance().getReference();
 
-        this.listView = (ListView) findViewById(R.id.issuesList);
-        this.addIssue = (FloatingActionButton) findViewById(R.id.addIssue);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        this.addIssue.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(IssuesActivity.this, RegisterIssue.class);
-                startActivityForResult(intent, REGISTER_ISSUE);
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        this.adapter = new FirebaseAdapter<IssueModel>(this.db.child(this.user.getUid()).child("issues"), IssueModel.class,R.layout.list_issue, this){
-            @Override
-            protected void populateView(View v, IssueModel model) {
-                ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
-                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
-                ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
-            }
-        };
+        Intent intent = getIntent();
+        this.boardID = intent.getStringExtra("board_key");
 
-        this.listView.setAdapter(this.adapter);
+        viewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(viewPager);
 
-        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String key = adapter.getKey(i);
-                Intent intent = new Intent(IssuesActivity.this, IssueDetail.class);
-                intent.putExtra("issue_key", key);
-                startActivityForResult(intent, ISSUE_DETAILS);
-            }
-        });
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        Bundle b = new Bundle();
+        b.putString("board_key", this.boardID);
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        Fragment all = new AllFragment();
+        Fragment toDo = new ToDoFragment();
+        Fragment inProgress = new InProgressFragment();
+        Fragment done = new DoneFragment();
+        all.setArguments(b);
+        toDo.setArguments(b);
+        inProgress.setArguments(b);
+        done.setArguments(b);
+        adapter.addFragment(all, "All");
+        adapter.addFragment(toDo, "To Do");
+        adapter.addFragment(inProgress, "In Progress");
+        adapter.addFragment(done, "Finished");
+        viewPager.setAdapter(adapter);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -89,13 +97,89 @@ public class IssuesActivity extends AppCompatActivity {
 
         if(requestCode == REGISTER_ISSUE && resultCode == Activity.RESULT_OK){
 
-            Toast.makeText(this, "Added issue", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Added issue to To Do list", Toast.LENGTH_SHORT).show();
         }
         else if(requestCode == ISSUE_DETAILS && resultCode == Activity.RESULT_OK){
-            Toast.makeText(this, "Edited successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Edited issue successfully", Toast.LENGTH_SHORT).show();
         }
         else if(requestCode == ISSUE_DETAILS && resultCode == 7){
-            Toast.makeText(this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Deleted issue successfully", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.db.child("users").child(this.user.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userName = dataSnapshot.getValue(String.class);
+                if(name != null){
+                    name.setText(userName);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        getMenuInflater().inflate(R.menu.home, menu);
+        this.name = (TextView) findViewById(R.id.userName);
+        if(this.userName != null){
+            this.name.setText(this.userName);
+        }
+        TextView email = (TextView) findViewById(R.id.eMail);
+        email.setText(this.user.getEmail());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            finish();
+        } else if (id == R.id.nav_calendar) {
+            Intent c = new Intent(IssuesActivity.this, CalendarActivity.class);
+            c.putExtra("board_key", this.boardID);
+            startActivityForResult(c, CALENDAR);
+        } else if (id == R.id.nav_add_users){
+            Intent c = new Intent(IssuesActivity.this, CollaboratorsActivity.class);
+            c.putExtra("board_key", this.boardID);
+            startActivityForResult(c, COLLABORATORS);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
