@@ -94,7 +94,7 @@
         android:layout_height="40dp"
         android:layout_alignEnd="@+id/name_input"
         android:layout_below="@+id/description_input"
-        android:onClick="addTag"
+        android:onClick="assignUser"
         android:text="assign"
         android:textSize="12sp" />
 
