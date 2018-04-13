@@ -78,6 +78,8 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
     }
 
     private void setupViewPager(ViewPager viewPager){

@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         this.login = (TextView) findViewById(R.id.loginLink);
         this.email = (EditText) findViewById(R.id.email);
-        this.name = (EditText) findViewById(R.id.name);
+        this.name = (EditText) findViewById(R.id.newTagName);
         this.password = (EditText) findViewById(R.id.password);
         this.passwordConfirm = (EditText) findViewById(R.id.passwordConfirm);
 

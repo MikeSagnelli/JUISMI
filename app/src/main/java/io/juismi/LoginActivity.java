@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v){
         String emailText = email.getText().toString(),
                passwordText = password.getText().toString();
+
         if(emailText.equals("") || passwordText.equals("")){
             Toast.makeText(this, "Fill with credentials", Toast.LENGTH_SHORT).show();
         } else{
