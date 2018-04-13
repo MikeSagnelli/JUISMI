@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -139,6 +140,7 @@ public class IssueDetail extends AppCompatActivity {
         };
 
         this.listView.setAdapter(this.adapter);
+
     }
 
 }

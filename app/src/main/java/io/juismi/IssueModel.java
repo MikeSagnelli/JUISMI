@@ -9,6 +9,7 @@ public class IssueModel {
     private String name,
                    description,
                    status,
+                    statusId,
                    boardID;
     private int points;
 

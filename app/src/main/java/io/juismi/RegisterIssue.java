@@ -37,7 +37,6 @@ import java.util.List;
 public class RegisterIssue extends AppCompatActivity{
 
     private DatabaseReference mDatabase;
-    private Spinner status;
     private String boardID;
     private List<String> tags;
     private ListView tagsList;
@@ -53,7 +52,6 @@ public class RegisterIssue extends AppCompatActivity{
         this.boardID = intent.getStringExtra("board_key");
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        this.tags = new ArrayList<>();
         this.tagsList = (ListView) findViewById(R.id.tagslistView);
         this.setListView();
    }
@@ -107,6 +105,7 @@ public class RegisterIssue extends AppCompatActivity{
 
     private void setListView(){
         this.checkBoxes = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.adapter = new FirebaseAdapter<TagModel>(this.mDatabase.child("tags").orderByChild("boardID").equalTo(this.boardID), TagModel.class,R.layout.tag_row, this) {
             @Override
             protected void populateView(View v, TagModel model) {
