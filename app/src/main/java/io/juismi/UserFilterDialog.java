@@ -60,7 +60,6 @@ public class UserFilterDialog extends Dialog {
                 int index = getModels().indexOf(model);
                 String key = getKey(index);
                 usersIDs.add(key);
-                usersIDs.add(key);
                 checkBox = v.findViewById(R.id.newTagName);
                 checkBox.setText(model.getName());
                 checkBoxes.add(checkBox);

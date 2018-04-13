@@ -88,7 +88,6 @@ public class AssignDialog extends Dialog {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         int index = checkBoxes.indexOf(compoundButton);
                         selectedUser = usersIDs.get(index);
-                        dismiss();
                     }
                 });
             }
