@@ -155,4 +155,6 @@ public abstract class FirebaseAdapter<T> extends BaseAdapter {
     }
 
     protected abstract void populateView(View v, T model);
+
+    public List<T> getModels(){ return this.models; }
 }

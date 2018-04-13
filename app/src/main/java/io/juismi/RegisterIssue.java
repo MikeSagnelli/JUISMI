@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -12,7 +13,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,49 +34,49 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFragmentInteractionListener, RegisterTagFragment.OnFragmentInteractionListener{
+public class RegisterIssue extends AppCompatActivity{
 
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseAdapter mAdapter;
-    private  TagFragment tagFragment;
-    private RegisterTagFragment registerTagFragment;
-    private Bundle bundle;
+    private Spinner status;
+    private String boardID;
+    private List<String> tags;
+    private ListView tagsList;
+    private FirebaseAdapter<TagModel> adapter;
+    private CheckBox checkBox;
+    private String currentKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_issue);
 
-        this.mAuth = FirebaseAuth.getInstance();
-        this.user = mAuth.getCurrentUser();
+        Intent intent = getIntent();
+        this.boardID = intent.getStringExtra("board_key");
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        this.bundle = new Bundle();
-        this.bundle.putString("boardID", BoardsActivity.boardID);
-        this.tagFragment = new TagFragment();
-        this.tagFragment.setArguments(this.bundle);
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.container, this.tagFragment, "tagsList");
-
-        ft.commit();
-
+        this.tags = new ArrayList<>();
+        this.tagsList = (ListView) findViewById(R.id.tagslistView);
+        this.setListView();
    }
 
     public void saveButtonClicked(View v){
+
 
         IssueModel newIssue = new IssueModel(
                 ((EditText) findViewById(R.id.name_input)).getText().toString(),
                 ((EditText) findViewById(R.id.description_input)).getText().toString(),
                 Integer.parseInt(((EditText) findViewById(R.id.points_input)).getText().toString()),
                 "To Do",
-                new ArrayList<Integer>()
+                this.boardID
         );
-        newIssue.addInt(5);
 
-        mDatabase.child(user.getUid()).child("issues").push().setValue(newIssue);
+        DatabaseReference ref = mDatabase.child("issues").push();
+        String issueID = ref.getKey();
+        ref.setValue(newIssue);
+        ref.child("board_status").setValue(this.boardID+"_"+status);
+
+        mDatabase.child("boards").child(this.boardID).child("issues").child(issueID).setValue(true);
+        this.saveTags(issueID);
 
         Intent result = new Intent();
         setResult(Activity.RESULT_OK, result);
@@ -80,26 +84,52 @@ public class RegisterIssue extends AppCompatActivity implements TagFragment.OnFr
     }
 
     public void addTag(View v){
-        FragmentManager fm = getFragmentManager();
-        Fragment f = fm.findFragmentByTag("tagsList");
+        TagDialogFragment dialog = new TagDialogFragment(this.boardID, this);
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                setListView();
+            }
+        });
+    }
 
-        if(f != null){
-            FragmentTransaction ft = fm.beginTransaction();
-            this.registerTagFragment = new RegisterTagFragment();
-            this.registerTagFragment.setArguments(this.bundle);
-            ft.remove(f);
-            ft.add(R.id.container, this.registerTagFragment, "registerTag");
-            ft.commit();
+    private void saveTags(String issueID){
+        for (String tagID: this.tags) {
+            mDatabase.child("issues").child(issueID).child("tags").child(tagID).setValue(true);
+            mDatabase.child("tags").child(tagID).child("issues").child(issueID).setValue(true);
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    private void setListView(){
+        this.adapter = new FirebaseAdapter<TagModel>(this.mDatabase.child("tags").orderByChild("boardID").equalTo(this.boardID), TagModel.class,R.layout.tag_row, this) {
+            @Override
+            protected void populateView(View v, TagModel model) {
+                int index = getModels().indexOf(model);
+                currentKey = getKey(index);
 
+                checkBox = v.findViewById(R.id.newTagName);
+                checkBox.setText(model.getName());
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if(b){
+                            if(!tags.contains(currentKey)){
+                                tags.add(currentKey);
+                            }
+                        } else{
+                            if(tags.contains(currentKey)){
+                                tags.remove(currentKey);
+                            }
+                        }
+                    }
+                });
+                String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
+                checkBox.setBackgroundColor(Color.parseColor(hexColor));
+            }
+        };
+
+        this.tagsList.setAdapter(this.adapter);
     }
 
-    @Override
-    public void onFragmentInteraction() {
-
-    }
 }

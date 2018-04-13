@@ -2,13 +2,16 @@ package io.juismi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -35,8 +39,10 @@ public class IssueDetail extends AppCompatActivity {
     private FirebaseUser user;
     private Query query;
     private IssueModel im;
-    private String key;
+    private String key,
+                   boardID;
     private TextView name, description, status, points;
+    private FirebaseAdapter adapter;
 
     private static final int EDIT_ISSUE = 0;
 
@@ -48,14 +54,17 @@ public class IssueDetail extends AppCompatActivity {
         Intent intent = getIntent();
         this.mAuth = FirebaseAuth.getInstance();
         this.key = intent.getStringExtra("issue_key");
+        this.boardID = intent.getStringExtra("board_key");
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
-        this.query = db.child(this.user.getUid()).child("issues").child(key);
+        this.query = db.child("issues").child(key);
+        this.tags = new ArrayList<>();
 
         name = (TextView) findViewById(R.id.nameIssue);
         description = (TextView) findViewById(R.id.descriptionIssue);
         status = (TextView) findViewById(R.id.statusIssue);
         points = (TextView) findViewById(R.id.storyPoints);
+        listView = (ListView) findViewById(R.id.tagLstView);
 
         this.query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,6 +94,7 @@ public class IssueDetail extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(IssueDetail.this, EditIssue.class);
                 intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, EDIT_ISSUE);
             }
         });
@@ -92,12 +102,15 @@ public class IssueDetail extends AppCompatActivity {
         boton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                db.child(user.getUid()).child("issues").child(key).removeValue();
+                db.child("boards").child(boardID).child("issues").child(key).removeValue();
+                db.child("issues").child(key).removeValue();
                 Intent result = new Intent();
                 setResult(7, result);
                 finish();
             }
         });
+
+        this.setTags();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -109,5 +122,19 @@ public class IssueDetail extends AppCompatActivity {
             setResult(Activity.RESULT_OK, result);
             finish();
         }
+    }
+
+    private void setTags(){
+        this.adapter = new FirebaseAdapter<TagModel>(this.db.child("tags").orderByChild("issues/"+this.key).equalTo(true), TagModel.class,R.layout.detail_tag_row, this) {
+            @Override
+            protected void populateView(View v, TagModel model) {
+                RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.rowLayout);
+                int index = getModels().indexOf(model);
+                String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
+                layout.setBackgroundColor(Color.parseColor(hexColor));
+            }
+        };
+
+        this.listView.setAdapter(this.adapter);
     }
 }

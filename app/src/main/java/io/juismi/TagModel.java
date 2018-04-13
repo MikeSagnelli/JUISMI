@@ -28,11 +28,16 @@ public class TagModel {
         this.name = name;
     }
 
+    public void setBoardID(String boardID){ this.boardID = boardID; }
+
 
     public int getColor() { return color;}
 
     public String getName() {
         return name;
     }
+
+    public String getBoardID(){ return boardID; }
+
 
 }

@@ -8,24 +8,24 @@ public class IssueModel {
 
     private String name,
                    description,
-                   status;
+                   status,
+                   boardID;
     private int points;
-    private List<Integer> tagIDs;
 
     public IssueModel(){
         this.name = null;
         this.description = null;
         this.points = 0;
         this.status = null;
-        this.tagIDs = new ArrayList<Integer>();
+        this.boardID = null;
     }
 
-    public IssueModel(String name, String description, int points, String status, List<Integer> tagIDs){
+    public IssueModel(String name, String description, int points, String status, String boardID){
         this.name = name;
         this.description = description;
         this.points = points;
         this.status = status;
-        this.tagIDs = tagIDs;
+        this.boardID = boardID;
     }
 
     public String getName(){return this.name;}
@@ -36,8 +36,6 @@ public class IssueModel {
 
     public String getStatusId(){return this.status;}
 
-    private List<Integer> getTagIDs(){return this.tagIDs;}
-
     public void setName(String name){this.name = name;}
 
     public void setDescription(String description){this.description = description;}
@@ -46,9 +44,20 @@ public class IssueModel {
 
     public void setStatusId(String status){this.status = status;}
 
-    public void setTagIDs(List<Integer> tagIDs){this.tagIDs = tagIDs;}
-
-    public void addInt(int a){
-        this.tagIDs.add(a);
+    public String getStatus() {
+        return status;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBoardID() {
+        return boardID;
+    }
+
+    public void setBoardID(String boardID) {
+        this.boardID = boardID;
+    }
+
 }

@@ -34,7 +34,6 @@ public class BoardsActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference db;
     private FirebaseAdapter adapter;
-    protected static String boardID;
 
     private static final int REGISTER_BOARD = 0;
     private static final int ISSUES = 1;
@@ -70,7 +69,6 @@ public class BoardsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String key = adapter.getKey(position);
-                boardID = key;
                 Log.d("hey", key);
                 Intent intent = new Intent(BoardsActivity.this, IssuesActivity.class);
                 intent.putExtra("board_key", key);
