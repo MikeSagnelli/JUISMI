@@ -29,7 +29,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BoardsActivity" />
         <activity android:name=".RegisterBoard" />
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".CollaboratorsActivity" />
+        <activity android:name=".RegisterCollaborator" />
+        <activity android:name=".EditCollaborator" />
+        <activity android:name=".CollaboratorDetails"></activity>
     </application>
 
 </manifest>
