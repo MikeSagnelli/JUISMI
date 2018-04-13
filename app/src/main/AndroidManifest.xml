@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.juismi">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,7 +24,8 @@
         <activity android:name=".RegisterIssue" />
         <activity android:name=".IssueDetail" />
         <activity android:name=".EditIssue" />
-        <activity android:name=".IssuesActivity" />
+        <activity android:name=".IssuesActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".BoardsActivity" />
         <activity android:name=".RegisterBoard"></activity>
     </application>
