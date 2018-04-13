@@ -95,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if(user != null) {
                                     db.child("users").child(user.getUid()).child("name").setValue(name.getText().toString());
+                                    db.child("users").child(user.getUid()).child("email").setValue(email.getText().toString());
                                 }
                                 Intent result = new Intent();
                                 setResult(Activity.RESULT_OK, result);
