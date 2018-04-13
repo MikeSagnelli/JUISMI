@@ -2,13 +2,13 @@
 <resources>
     <string-array name="status_arrays">
         <item>To Do</item>
-        <item>Doing</item>
+        <item>In Progress</item>
         <item>Done</item>
     </string-array>
     <string-array name="array_status">
         <item>All</item>
         <item>To Do</item>
-        <item>Doing</item>
+        <item>In Progress</item>
         <item>Done</item>
     </string-array>
 

@@ -35,7 +35,8 @@ public class IssueDetail extends AppCompatActivity {
     private FirebaseUser user;
     private Query query;
     private IssueModel im;
-    private String key;
+    private String key,
+                   boardID;
     private TextView name, description, status, points;
 
     private static final int EDIT_ISSUE = 0;
@@ -48,9 +49,10 @@ public class IssueDetail extends AppCompatActivity {
         Intent intent = getIntent();
         this.mAuth = FirebaseAuth.getInstance();
         this.key = intent.getStringExtra("issue_key");
+        this.boardID = intent.getStringExtra("board_key");
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
-        this.query = db.child(this.user.getUid()).child("issues").child(key);
+        this.query = db.child("issues").child(key);
 
         name = (TextView) findViewById(R.id.nameIssue);
         description = (TextView) findViewById(R.id.descriptionIssue);
@@ -85,6 +87,7 @@ public class IssueDetail extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(IssueDetail.this, EditIssue.class);
                 intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
                 startActivityForResult(intent, EDIT_ISSUE);
             }
         });
@@ -92,7 +95,8 @@ public class IssueDetail extends AppCompatActivity {
         boton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                db.child(user.getUid()).child("issues").child(key).removeValue();
+                db.child("boards").child(boardID).child("issues").child(key).removeValue();
+                db.child("issues").child(key).removeValue();
                 Intent result = new Intent();
                 setResult(7, result);
                 finish();

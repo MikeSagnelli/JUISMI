@@ -33,7 +33,8 @@ public class EditIssue extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference db;
     private Spinner status;
-    private String key;
+    private String key,
+                   boardID;
     private TextView name, description, points;
 
     @Override
@@ -48,6 +49,7 @@ public class EditIssue extends AppCompatActivity {
 
         Intent intent = getIntent();
         this.key = intent.getStringExtra("issue_key");
+        this.boardID = intent.getStringExtra("board_key");
 
         this.mAuth = FirebaseAuth.getInstance();
         this.user = mAuth.getCurrentUser();
@@ -59,7 +61,7 @@ public class EditIssue extends AppCompatActivity {
         this.status.setAdapter(adapter);
 
         Map<String, Object> map = new HashMap<String,Object>();
-        Query query = db.child(this.user.getUid()).child("issues").child(key);
+        Query query = db.child("issues").child(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,7 +74,7 @@ public class EditIssue extends AppCompatActivity {
                         case "To Do":
                             status.setSelection(0);
                             break;
-                        case "Doing":
+                        case "In Progress":
                             status.setSelection(1);
                             break;
                         case "Done":
@@ -94,13 +96,16 @@ public class EditIssue extends AppCompatActivity {
 
     public void saveButtonClicked(View v){
 
+        String status = ((Spinner) findViewById(R.id.status_input2)).getSelectedItem().toString();
+
         Map<String, Object> postValues = new HashMap<String,Object>();
         postValues.put("name", ((EditText) findViewById(R.id.name_input2)).getText().toString());
         postValues.put("description", ((EditText) findViewById(R.id.description_input2)).getText().toString());
-        postValues.put("statusId", ((Spinner) findViewById(R.id.status_input2)).getSelectedItem().toString());
+        postValues.put("status", status);
         postValues.put("points", Integer.parseInt(((EditText) findViewById(R.id.points_input2)).getText().toString()));
 
-        mDatabase.child(user.getUid()).child("issues").child(this.key).updateChildren(postValues);
+        db.child("issues").child(this.key).updateChildren(postValues);
+        db.child("issues").child(this.key).child("board_status").setValue(this.boardID+"_"+status);
 
         Intent result = new Intent();
         setResult(Activity.RESULT_OK, result);
