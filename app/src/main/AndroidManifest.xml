@@ -24,10 +24,12 @@
         <activity android:name=".RegisterIssue" />
         <activity android:name=".IssueDetail" />
         <activity android:name=".EditIssue" />
-        <activity android:name=".IssuesActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".IssuesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BoardsActivity" />
-        <activity android:name=".RegisterBoard"></activity>
+        <activity android:name=".RegisterBoard" />
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>
