@@ -39,6 +39,7 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
     private static final int CALENDAR = 2;
+    private static final int COLLABORATORS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,10 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
             Intent c = new Intent(IssuesActivity.this, CalendarActivity.class);
             c.putExtra("board_key", this.boardID);
             startActivityForResult(c, CALENDAR);
+        } else if (id == R.id.nav_add_users){
+            Intent c = new Intent(IssuesActivity.this, CollaboratorsActivity.class);
+            c.putExtra("board_key", this.boardID);
+            startActivityForResult(c, COLLABORATORS);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
