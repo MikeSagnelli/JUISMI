@@ -43,6 +43,7 @@ public class IssueDetail extends AppCompatActivity {
                    boardID;
     private TextView name, description, status, points;
     private FirebaseAdapter adapter;
+    private ArrayList<String> tags;
 
     private static final int EDIT_ISSUE = 0;
 
@@ -58,7 +59,6 @@ public class IssueDetail extends AppCompatActivity {
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
         this.query = db.child("issues").child(key);
-        this.tags = new ArrayList<>();
 
         name = (TextView) findViewById(R.id.nameIssue);
         description = (TextView) findViewById(R.id.descriptionIssue);
@@ -95,6 +95,7 @@ public class IssueDetail extends AppCompatActivity {
                 Intent intent = new Intent(IssueDetail.this, EditIssue.class);
                 intent.putExtra("issue_key", key);
                 intent.putExtra("board_key", boardID);
+                intent.putStringArrayListExtra("tags", tags);
                 startActivityForResult(intent, EDIT_ISSUE);
             }
         });
@@ -125,11 +126,13 @@ public class IssueDetail extends AppCompatActivity {
     }
 
     private void setTags(){
+        this.tags = new ArrayList<>();
         this.adapter = new FirebaseAdapter<TagModel>(this.db.child("tags").orderByChild("issues/"+this.key).equalTo(true), TagModel.class,R.layout.detail_tag_row, this) {
             @Override
             protected void populateView(View v, TagModel model) {
                 RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.rowLayout);
                 int index = getModels().indexOf(model);
+                tags.add(getKey(index));
                 String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
                 layout.setBackgroundColor(Color.parseColor(hexColor));
             }
@@ -137,4 +140,5 @@ public class IssueDetail extends AppCompatActivity {
 
         this.listView.setAdapter(this.adapter);
     }
+
 }

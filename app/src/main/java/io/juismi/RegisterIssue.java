@@ -42,8 +42,7 @@ public class RegisterIssue extends AppCompatActivity{
     private List<String> tags;
     private ListView tagsList;
     private FirebaseAdapter<TagModel> adapter;
-    private CheckBox checkBox;
-    private String currentKey;
+    private ArrayList<CheckBox> checkBoxes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,35 +94,29 @@ public class RegisterIssue extends AppCompatActivity{
     }
 
     private void saveTags(String issueID){
-        for (String tagID: this.tags) {
-            mDatabase.child("issues").child(issueID).child("tags").child(tagID).setValue(true);
-            mDatabase.child("tags").child(tagID).child("issues").child(issueID).setValue(true);
+        for (int i = 0; i < this.tags.size(); i++) {
+            String tagID = this.tags.get(i);
+            boolean selected = this.checkBoxes.get(i).isChecked();
+            if(selected){
+                this.mDatabase.child("issues").child(issueID).child("tags").child(tagID).setValue(selected);
+                this.mDatabase.child("tags").child(tagID).child("issues").child(issueID).setValue(selected);
+            }
         }
+
     }
 
     private void setListView(){
+        this.checkBoxes = new ArrayList<>();
         this.adapter = new FirebaseAdapter<TagModel>(this.mDatabase.child("tags").orderByChild("boardID").equalTo(this.boardID), TagModel.class,R.layout.tag_row, this) {
             @Override
             protected void populateView(View v, TagModel model) {
                 int index = getModels().indexOf(model);
-                currentKey = getKey(index);
+                String currentKey = getKey(index);
+                CheckBox checkBox = v.findViewById(R.id.newTagName);
 
-                checkBox = v.findViewById(R.id.newTagName);
+                tags.add(currentKey);
+                checkBoxes.add(checkBox);
                 checkBox.setText(model.getName());
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if(b){
-                            if(!tags.contains(currentKey)){
-                                tags.add(currentKey);
-                            }
-                        } else{
-                            if(tags.contains(currentKey)){
-                                tags.remove(currentKey);
-                            }
-                        }
-                    }
-                });
                 String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
                 checkBox.setBackgroundColor(Color.parseColor(hexColor));
             }
