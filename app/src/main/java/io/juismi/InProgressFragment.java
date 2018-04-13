@@ -1,6 +1,7 @@
 package io.juismi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,13 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class InProgressFragment extends Fragment {
 
-    private ListView listView;
+    private ListView listView, tagsList;
     private FloatingActionButton addIssue;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference db;
-    private FirebaseAdapter adapter;
+    private FirebaseAdapter adapter, tagsAdapter, tagRowAdapter;
     private String boardID;
 
     private static final int REGISTER_ISSUE = 0;
@@ -47,6 +49,7 @@ public class InProgressFragment extends Fragment {
         this.db = FirebaseDatabase.getInstance().getReference();
 
         this.listView = view.findViewById(R.id.issuesList);
+        this.tagsList = view.findViewById(R.id.tagsList);
         this.addIssue = getActivity().findViewById(R.id.addIssue);
 
         this.addIssue.setOnClickListener(new View.OnClickListener(){
@@ -61,12 +64,26 @@ public class InProgressFragment extends Fragment {
             @Override
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
-                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
+                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatus());
                 ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
+
+                int index = getModels().indexOf(model);
+                String key = getKey(index);
+                ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
             }
         };
-
         this.listView.setAdapter(this.adapter);
+
+        this.tagsAdapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("board_status").equalTo(this.boardID+"_In Progress"), IssueModel.class,R.layout.issues_tag, getActivity()){
+            @Override
+            protected void populateView(View v, IssueModel model) {
+                int index = getModels().indexOf(model);
+                String key = getKey(index);
+                ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
+                fillTags(key, tagsList);
+            }
+        };
+        this.tagsList.setAdapter(this.tagsAdapter);
 
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,5 +97,19 @@ public class InProgressFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void fillTags(String issueID, ListView listView){
+        this.tagRowAdapter = new FirebaseAdapter<TagModel>(this.db.child("tags").orderByChild("issues/"+issueID).equalTo(true), TagModel.class,R.layout.detail_tag_row, getActivity()){
+
+            @Override
+            protected void populateView(View v, TagModel model) {
+                RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.rowLayout);
+                int index = getModels().indexOf(model);
+                String hexColor = String.format("#%06X", (0xFFFFFF & model.getColor()));
+                layout.setBackgroundColor(Color.parseColor(hexColor));
+            }
+        };
+        listView.setAdapter(this.tagRowAdapter);
     }
 }

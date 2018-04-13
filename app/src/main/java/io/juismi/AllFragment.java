@@ -41,7 +41,7 @@ public class AllFragment extends Fragment{
     private FirebaseAdapter adapter, tagsAdapter, tagRowAdapter;
     private String boardID;
     private TagFilterDialog tfd;
-    private AdapterView.OnItemClickListener listener;
+    private AdapterView.OnItemClickListener listener, listener2;
 
     private static final int REGISTER_ISSUE = 0;
     private static final int ISSUE_DETAILS = 1;
@@ -72,13 +72,24 @@ public class AllFragment extends Fragment{
             }
         };
 
-        String[] filters = new String[]{"Clear Filter","Filter by User","Filter by Tag",""};
+        this.listener2 = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String key = tagsAdapter.getKey(i);
+                Intent intent = new Intent(getActivity(), IssueDetail.class);
+                intent.putExtra("issue_key", key);
+                intent.putExtra("board_key", boardID);
+                startActivityForResult(intent, ISSUE_DETAILS);
+            }
+        };
+
+        String[] filters = new String[]{"Clear Filter","Filter by User","Filter by Tag"};
         ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, filters);
         this.filter.setAdapter(filterAdapter);
         this.filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                filter.setSelection(3);
+                filter.setSelection(-1);
                 if(i == 2){
                     tfd = new TagFilterDialog(getActivity(), boardID);
                     tfd.show();
@@ -120,7 +131,7 @@ public class AllFragment extends Fragment{
             @Override
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
-                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatusId());
+                ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatus());
                 ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
 
                 int index = getModels().indexOf(model);
@@ -141,7 +152,7 @@ public class AllFragment extends Fragment{
             }
         };
         this.tagsList.setAdapter(this.tagsAdapter);
-        this.tagsList.setOnItemClickListener(this.listener);
+        this.tagsList.setOnItemClickListener(this.listener2);
     }
 
     private void filterByTag(String tagID){
@@ -154,6 +165,17 @@ public class AllFragment extends Fragment{
             }
         };
         this.listView.setAdapter(this.adapter);
+
+        this.tagsAdapter = new FirebaseAdapter<IssueModel>(this.db.child("issues").orderByChild("tags/"+tagID).equalTo(true), IssueModel.class,R.layout.issues_tag, getActivity()){
+            @Override
+            protected void populateView(View v, IssueModel model) {
+                int index = getModels().indexOf(model);
+                String key = getKey(index);
+                ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
+                fillTags(key, tagsList);
+            }
+        };
+        this.tagsList.setAdapter(this.tagsAdapter);
     }
 
     private void fillTags(String issueID, ListView listView){
