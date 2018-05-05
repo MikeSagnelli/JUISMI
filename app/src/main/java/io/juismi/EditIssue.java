@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -135,9 +137,17 @@ public class EditIssue extends AppCompatActivity {
         postValues.put("status", status);
         postValues.put("points", (Integer) points.getSelectedItem());
         postValues.put("userID", this.userID);
+        postValues.put("dueDate", ((EditText) findViewById(R.id.dueDate)).getText().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
         db.child("issues").child(this.key).updateChildren(postValues);
         db.child("issues").child(this.key).child("board_status").setValue(this.boardID+"_"+status);
+        try{
+            db.child("issues").child(this.key).child("board_date").setValue(this.boardID+"_"+sdf.parse(((EditText)findViewById(R.id.dueDate)).getText().toString()).toString());
+        }
+        catch(ParseException e){
+            e.printStackTrace();
+        }
 
         this.saveTags(this.key);
 
