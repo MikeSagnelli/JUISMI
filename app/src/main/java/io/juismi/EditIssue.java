@@ -123,6 +123,7 @@ public class EditIssue extends AppCompatActivity {
         });
 
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
+        getSupportActionBar().setTitle("Editing Issue");
 
         this.setListView();
     }

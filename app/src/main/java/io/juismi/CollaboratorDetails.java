@@ -75,5 +75,6 @@ public class CollaboratorDetails extends AppCompatActivity {
                 finish();
             }
         });
+        getSupportActionBar().setTitle("Collaborator Details");
     }
 }

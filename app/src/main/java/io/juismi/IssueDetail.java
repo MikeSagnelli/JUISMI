@@ -125,6 +125,7 @@ public class IssueDetail extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Issue Details");
         this.setTags();
         this.setComments();
     }

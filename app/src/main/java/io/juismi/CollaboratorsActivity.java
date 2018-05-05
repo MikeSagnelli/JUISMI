@@ -69,5 +69,6 @@ public class CollaboratorsActivity extends AppCompatActivity {
                 startActivityForResult(intent, DETAILS_COLLAB);
             }
         });
+        getSupportActionBar().setTitle("Collaborators");
     }
 }
