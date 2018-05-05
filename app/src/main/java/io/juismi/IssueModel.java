@@ -10,13 +10,13 @@ public class IssueModel {
                    description,
                    status,
                    boardID,
-                    userID;
-    private int points;
+                   userID;
+    private int priority;
 
     public IssueModel(){
         this.name = null;
         this.description = null;
-        this.points = 0;
+        this.priority = 0;
         this.status = null;
         this.boardID = null;
         this.userID = null;
@@ -25,7 +25,7 @@ public class IssueModel {
     public IssueModel(String name, String description, int points, String status, String boardID, String userID){
         this.name = name;
         this.description = description;
-        this.points = points;
+        this.priority = points;
         this.status = status;
         this.boardID = boardID;
         this.userID = userID;
@@ -35,7 +35,7 @@ public class IssueModel {
 
     public String getDescription() {return this.description;}
 
-    public int getPoints(){return this.points;}
+    public int getPoints(){return this.priority;}
 
     public String getStatusId(){return this.status;}
 
@@ -43,7 +43,7 @@ public class IssueModel {
 
     public void setDescription(String description){this.description = description;}
 
-    public void setPoints(int points){this.points = points;}
+    public void setPoints(int points){this.priority = points;}
 
     public void setStatusId(String status){this.status = status;}
 

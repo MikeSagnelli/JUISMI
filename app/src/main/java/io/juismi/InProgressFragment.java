@@ -65,7 +65,7 @@ public class InProgressFragment extends Fragment {
             protected void populateView(View v, IssueModel model) {
                 ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
                 ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatus());
-                ((TextView)v.findViewById(R.id.storyPoints)).setText("Story Points: " + String.valueOf(model.getPoints()));
+                ((TextView)v.findViewById(R.id.storyPoints)).setText("Priority: " + String.valueOf(model.getPoints()));
 
                 int index = getModels().indexOf(model);
                 String key = getKey(index);
