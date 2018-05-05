@@ -176,6 +176,18 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
             Intent c = new Intent(IssuesActivity.this, CollaboratorsActivity.class);
             c.putExtra("board_key", this.boardID);
             startActivityForResult(c, COLLABORATORS);
+        } else if (id == R.id.nav_share){
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "JUISMI");
+                String sAux = "\nLet me recommend you this application\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=the.package.id \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "choose one"));
+            } catch(Exception e) {
+                //e.toString();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
