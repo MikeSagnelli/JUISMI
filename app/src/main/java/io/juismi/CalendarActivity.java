@@ -1,12 +1,18 @@
 package io.juismi;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.util.DateInterval;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,14 +60,19 @@ public class CalendarActivity extends AppCompatActivity {
     private ListView lv;
     private FirebaseAdapter<IssueModel> adapter;
     private AdapterView.OnItemClickListener listener;
+    private NotificationCompat.Builder mBuilder;
+    private Date currentTime;
 
     private static final int ISSUE_DETAILS = 0;
+    private static final int NOTIFICATION_ID = 123456789;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        this.currentTime = Calendar.getInstance().getTime();
         this.boardId = getIntent().getStringExtra("board_key");
         this.sdf = new SimpleDateFormat("dd MM yyyy");
         final ActionBar actionBar = getSupportActionBar();
@@ -112,6 +123,13 @@ public class CalendarActivity extends AppCompatActivity {
                     e.printStackTrace();
                     timeInMilliseconds = 0;
                 }
+                long interval = timeInMilliseconds - currentTime.getTime();
+                if(interval < 45168179 && interval > 0){
+                    initChannels(CalendarActivity.this);
+                    sendNotification(dataSnapshot.getKey(), issue.getName());
+                }
+
+
                 Event ev = new Event (Color.BLUE, timeInMilliseconds, issue.getName().toString());
                 issuesEvents.add(ev);
                 compactCalendar.addEvents(issuesEvents);
@@ -183,5 +201,33 @@ public class CalendarActivity extends AppCompatActivity {
         else if(requestCode == ISSUE_DETAILS && resultCode == 7){
             Toast.makeText(this, "Deleted issue successfully", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendNotification(String key, String name){
+        mBuilder = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.drawable.logo2)
+                .setContentTitle("Juismi")
+                .setContentText("An issue has its due date soon: " + name);
+
+        Intent resultIntent = new Intent(this, IssueDetail.class);
+        resultIntent.putExtra("issue_key", key);
+        resultIntent.putExtra("board_key", boardId);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, ISSUE_DETAILS, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    public void initChannels(Context context) {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel("default",
+                "Channel name",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription("Channel description");
+        notificationManager.createNotificationChannel(channel);
     }
 }
