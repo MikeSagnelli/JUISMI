@@ -130,43 +130,10 @@ public class CalendarActivity extends AppCompatActivity {
                 }
 
 
-                Event ev = new Event (Color.BLUE, timeInMilliseconds, issue.getName().toString());
+                Event ev = new Event (Color.RED, timeInMilliseconds, issue.getName().toString());
                 issuesEvents.add(ev);
                 compactCalendar.addEvents(issuesEvents);
-                compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
-                    @Override
-                    public void onDayClick(Date dateClicked) {
-                        Context context = getApplicationContext();
-                        if(compactCalendar.getEvents(dateClicked).size() == 0){
-                            //Toast.makeText(context, "No hay tareas para este día.", Toast.LENGTH_SHORT).show();
-                            textView.setText("No issues for today.");
-                        }else{
-                            List<Event> issuesOnDate = compactCalendar.getEvents(dateClicked);
-                            String issuesListString="Issues: \n";
-                            adapter = new FirebaseAdapter<IssueModel>(db.child("issues").orderByChild("board_date").equalTo(boardId+"_"+dateClicked.toString()), IssueModel.class, R.layout.list_issue, CalendarActivity.this) {
-                                @Override
-                                protected void populateView(View v, IssueModel model) {
-                                    ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
-                                    ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatus());
-                                    ((TextView)v.findViewById(R.id.storyPoints)).setText("Priority: " + String.valueOf(model.getPoints()));
-
-                                    int index = getModels().indexOf(model);
-                                    String key = getKey(index);
-                                    ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
-                                }
-                            };
-                            lv.setAdapter(adapter);
-                            lv.setOnItemClickListener(listener);
-                            //Toast.makeText(context, tasksString,Toast.LENGTH_SHORT).show();
-                            textView.setText(issuesListString);
-                        }
-                    }
-
-                    @Override
-                    public void onMonthScroll(Date firstDayOfNewMonth) {
-                        actionBar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
-                    }
-                });
+                textView.setText("Issues:");
             }
 
             @Override
@@ -190,6 +157,39 @@ public class CalendarActivity extends AppCompatActivity {
             }
 
 
+        });
+        compactCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                Context context = getApplicationContext();
+                if(compactCalendar.getEvents(dateClicked).size() == 0){
+                    //Toast.makeText(context, "No hay tareas para este día.", Toast.LENGTH_SHORT).show();
+                    textView.setText("No issues for today.");
+                }else{
+                    List<Event> issuesOnDate = compactCalendar.getEvents(dateClicked);
+                    adapter = new FirebaseAdapter<IssueModel>(db.child("issues").orderByChild("board_date").equalTo(boardId+"_"+dateClicked.toString()), IssueModel.class, R.layout.list_issue, CalendarActivity.this) {
+                        @Override
+                        protected void populateView(View v, IssueModel model) {
+                            ((TextView)v.findViewById(R.id.nameTask)).setText(model.getName());
+                            ((TextView)v.findViewById(R.id.issueStatus)).setText("Status: " + model.getStatus());
+                            ((TextView)v.findViewById(R.id.storyPoints)).setText("Priority: " + String.valueOf(model.getPoints()));
+
+                            int index = getModels().indexOf(model);
+                            String key = getKey(index);
+                            ListView tagsList = (ListView) v.findViewById(R.id.tagsListView);
+                        }
+                    };
+                    lv.setAdapter(adapter);
+                    lv.setOnItemClickListener(listener);
+                    //Toast.makeText(context, tasksString,Toast.LENGTH_SHORT).show();
+                    textView.setText("Issues:");
+                }
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                actionBar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
+            }
         });
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

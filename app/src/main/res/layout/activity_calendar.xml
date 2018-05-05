@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/compactcalendar_view"
-        android:text="TextView"
+        android:text="Issues:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <ListView

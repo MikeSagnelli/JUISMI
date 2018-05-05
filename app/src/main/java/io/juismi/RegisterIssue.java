@@ -108,6 +108,7 @@ public class RegisterIssue extends AppCompatActivity{
         }
 
         this.saveTags(issueID);
+        getSupportActionBar().setTitle("Issue Registration");
 
         Intent result = new Intent();
         setResult(Activity.RESULT_OK, result);
