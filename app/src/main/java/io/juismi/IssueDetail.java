@@ -77,7 +77,7 @@ public class IssueDetail extends AppCompatActivity {
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
                     status.setText("Status: " + map.get("status").toString());
-                    points.setText("Story Points:" + map.get("points").toString());
+                    points.setText("Priority:" + map.get("points").toString());
 
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();

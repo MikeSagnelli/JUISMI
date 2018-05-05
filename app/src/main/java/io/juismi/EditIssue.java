@@ -40,11 +40,12 @@ public class EditIssue extends AppCompatActivity {
     private Spinner status;
     private String key,
                    boardID, userID;
-    private TextView name, description, points;
+    private TextView name, description;
     private FirebaseAdapter adapter;
     private ArrayList<String> tags, allTags;
     private ArrayList<CheckBox> checkBoxes;
     private ListView tagsList;
+    private Spinner points;
     private AssignDialog dialog;
 
     @Override
@@ -55,7 +56,7 @@ public class EditIssue extends AppCompatActivity {
         this.status = (Spinner) findViewById(R.id.status_input2);
         this.name = (TextView) findViewById(R.id.name_input2);
         this.description = (TextView) findViewById(R.id.description_input2);
-        this.points = (TextView) findViewById(R.id.points_input2);
+        this.points = (Spinner) findViewById(R.id.priority);
         this.tagsList = (ListView) findViewById(R.id.listView);
 
         Intent intent = getIntent();
@@ -67,6 +68,16 @@ public class EditIssue extends AppCompatActivity {
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
         this.dialog =  new AssignDialog(this.boardID, this);
+
+        this.points = (Spinner) findViewById(R.id.priority);
+        ArrayList<Integer> priority_options = new ArrayList<>();
+        for(int i = 0; i <= 5; i++){
+            priority_options.add(i);
+        }
+
+        ArrayAdapter<Integer> adapter_priority;
+        adapter_priority = new ArrayAdapter<Integer>(this, R.layout.priority_spinner, R.id.priority_item, priority_options);
+        this.points.setAdapter(adapter_priority);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.status_arrays, android.R.layout.simple_spinner_item);
@@ -97,7 +108,7 @@ public class EditIssue extends AppCompatActivity {
                             status.setSelection(2);
                             break;
                     }
-                    points.setText(map.get("points").toString());
+                    points.setSelection(((Long) map.get("points")).intValue());
                 }
         }
 
@@ -120,7 +131,7 @@ public class EditIssue extends AppCompatActivity {
         postValues.put("name", ((EditText) findViewById(R.id.name_input2)).getText().toString());
         postValues.put("description", ((EditText) findViewById(R.id.description_input2)).getText().toString());
         postValues.put("status", status);
-        postValues.put("points", Integer.parseInt(((EditText) findViewById(R.id.points_input2)).getText().toString()));
+        postValues.put("points", (Integer) points.getSelectedItem());
         postValues.put("userID", this.userID);
 
         db.child("issues").child(this.key).updateChildren(postValues);

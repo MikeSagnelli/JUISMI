@@ -23,16 +23,6 @@
         android:hint="Name"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/points_input2"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/name_input2"
-        android:layout_alignBottom="@+id/name_input2"
-        android:layout_alignParentEnd="true"
-        android:hint="Points"
-        android:inputType="text" />
-
     <Button
         android:id="@+id/saveButton2"
         style="@android:style/Widget.Material.Button.Colored"
@@ -56,7 +46,6 @@
 
     <Spinner
         android:id="@+id/status_input2"
-        style="@style/SpinnerTheme"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_below="@+id/textView4"
@@ -101,4 +90,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="28dp" />
     </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/description_input2"
+        android:layout_alignTop="@+id/name_input2"
+        android:layout_toEndOf="@+id/name_input2" />
 </RelativeLayout>

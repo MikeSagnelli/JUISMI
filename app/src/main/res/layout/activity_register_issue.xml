@@ -26,16 +26,6 @@
         android:hint="Name"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/points_input"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/name_input"
-        android:layout_alignBottom="@+id/name_input"
-        android:layout_alignParentEnd="true"
-        android:hint="Points"
-        android:inputType="text" />
-
 
     <Button
         android:id="@+id/saveButton3"
@@ -81,8 +71,9 @@
         style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignStart="@+id/points_input"
-        android:layout_below="@+id/description_input"
+        android:layout_alignTop="@+id/button2"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/button2"
         android:onClick="addTag"
         android:text="add tag "
         android:textSize="12sp" />
@@ -97,6 +88,14 @@
         android:onClick="assignUser"
         android:text="assign"
         android:textSize="12sp" />
+
+    <Spinner
+        android:id="@+id/priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/description_input"
+        android:layout_alignTop="@+id/name_input"
+        android:layout_toEndOf="@+id/name_input" />
 
 
 </RelativeLayout>
