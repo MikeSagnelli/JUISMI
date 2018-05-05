@@ -76,6 +76,15 @@ public class RegisterIssue extends AppCompatActivity{
         ref.child("board_status").setValue(this.boardID+"_To Do");
 
         mDatabase.child("boards").child(this.boardID).child("issues").child(issueID).setValue(true);
+        try{
+            if(this.userID != null && this.userID != "") {
+                mDatabase.child("issues").child(issueID).child("board_user").setValue(this.boardID+"_"+this.userID);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
         this.saveTags(issueID);
 
         Intent result = new Intent();

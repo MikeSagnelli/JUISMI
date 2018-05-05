@@ -82,6 +82,8 @@ public class IssueDetail extends AppCompatActivity {
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();
                         setUserName(userID);
+                    } else{
+                        setUserName("None");
                     }
                 }
             }
