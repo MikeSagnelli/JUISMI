@@ -158,7 +158,7 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "JUISMI");
-                String sAux = "\nLet me recommend you this application\n\n";
+                String sAux = "\nInstall Juismi for me to add you to my board\n\n";
                 sAux = sAux + "https://play.google.com/store/apps/details?id=io.juismi \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "choose one"));
@@ -191,8 +191,8 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "JUISMI");
-                String sAux = "\nLet me recommend you this application\n\n";
-                sAux = sAux + "https://play.google.com/store/apps/details?id=the.package.id \n\n";
+                String sAux = "\nInstall Juismi for me to add you to my board\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=io.juismi \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "choose one"));
             } catch(Exception e) {

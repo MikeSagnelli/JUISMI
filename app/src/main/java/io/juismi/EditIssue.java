@@ -169,6 +169,11 @@ public class EditIssue extends AppCompatActivity {
         this.tagsList.setAdapter(this.adapter);
     }
 
+    public void addComment(View v){
+        CommentDialogFragment cdf = new CommentDialogFragment(this.key, this);
+        cdf.show();
+    }
+
     private void saveTags(String issueID){
         for (int i = 0; i < this.allTags.size(); i++) {
             String tagID = this.allTags.get(i);
