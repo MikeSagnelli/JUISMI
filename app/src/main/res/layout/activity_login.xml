@@ -50,23 +50,13 @@
         android:text="@string/login_button"
         android:textColor="#fff" />
 
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/loginButton"
-        android:layout_alignStart="@+id/loginButton"
-        android:layout_below="@+id/loginButton"
-        android:layout_gravity="center_horizontal" />
-
     <TextView
         android:id="@+id/forgot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/question"
-        android:layout_below="@+id/login_button"
-        android:layout_marginTop="11dp"
+        android:layout_alignStart="@+id/logo1"
+        android:layout_below="@+id/registerLink"
+        android:layout_marginTop="22dp"
         android:text="Forgot your password?"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold" />
@@ -75,18 +65,17 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp"
+        android:layout_below="@+id/loginButton"
+        android:layout_toStartOf="@+id/registerLink"
         android:text="@string/have_account" />
 
     <TextView
         android:id="@+id/registerLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/question"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignEnd="@+id/loginButton"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginEnd="60dp"
         android:text="@string/register_button"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold" />
