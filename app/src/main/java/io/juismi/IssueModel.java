@@ -1,8 +1,8 @@
 package io.juismi;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class IssueModel {
 
@@ -10,7 +10,9 @@ public class IssueModel {
                    description,
                    status,
                    boardID,
-                   userID;
+                   userID,
+                   dueDate;
+
     private int priority;
 
     public IssueModel(){
@@ -20,15 +22,34 @@ public class IssueModel {
         this.status = null;
         this.boardID = null;
         this.userID = null;
+        this.dueDate = null;
     }
 
-    public IssueModel(String name, String description, int points, String status, String boardID, String userID){
+    public IssueModel(String name, String description, int points, String status, String boardID, String userID, String date){
         this.name = name;
         this.description = description;
         this.priority = points;
         this.status = status;
         this.boardID = boardID;
         this.userID = userID;
+        this.dueDate = date;
+
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getName(){return this.name;}

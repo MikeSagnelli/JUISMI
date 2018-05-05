@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class RegisterIssue extends AppCompatActivity{
     private FirebaseAdapter<TagModel> adapter;
     private ArrayList<CheckBox> checkBoxes;
     private AssignDialog dialog;
+    private IssueModel newIssue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +72,30 @@ public class RegisterIssue extends AppCompatActivity{
         this.dialog = new AssignDialog(this.boardID, this);
    }
 
-    public void saveButtonClicked(View v){
+    public void saveButtonClicked(View v) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
-
-        IssueModel newIssue = new IssueModel(
+        newIssue = new IssueModel(
                 ((EditText) findViewById(R.id.name_input)).getText().toString(),
                 ((EditText) findViewById(R.id.description_input)).getText().toString(),
                 (Integer) spinner.getSelectedItem(),
                 "To Do",
-                this.boardID, this.userID
+                this.boardID,
+                this.userID,
+                ((EditText)findViewById(R.id.date)).getText().toString()
         );
+
 
         DatabaseReference ref = mDatabase.child("issues").push();
         String issueID = ref.getKey();
         ref.setValue(newIssue);
         ref.child("board_status").setValue(this.boardID+"_To Do");
+        try{
+            ref.child("board_date").setValue(this.boardID+"_"+sdf.parse(((EditText)findViewById(R.id.date)).getText().toString()).toString());
+        }
+        catch(ParseException e){
+            e.printStackTrace();
+        }
 
         mDatabase.child("boards").child(this.boardID).child("issues").child(issueID).setValue(true);
         try{
