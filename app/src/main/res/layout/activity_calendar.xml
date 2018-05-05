@@ -24,12 +24,20 @@
         app:compactCalendarMultiEventIndicatorColor="#fff"
         />
 
-    <android.support.v7.widget.AppCompatTextView
+    <TextView
         android:id="@+id/textview_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/compactcalendar_view"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <ListView
+        android:id="@+id/issues_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/compactcalendar_view"
-        android:layout="@id/textview_calendar"
-        android:textSize="20dp" />
+        android:layout_below="@+id/textview_calendar" />
+
 </RelativeLayout>

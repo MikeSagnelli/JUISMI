@@ -44,7 +44,7 @@ public class IssueDetail extends AppCompatActivity {
     private IssueModel im;
     private String key,
                    boardID, userID;
-    private TextView name, description, status, points, userTv;
+    private TextView name, description, status, points, userTv, dueDate;
     private FirebaseAdapter adapter, commentsAdapter;
     private ArrayList<String> tags, comments;
 
@@ -70,6 +70,7 @@ public class IssueDetail extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.tagLstView);
         commentsList = (ListView) findViewById(R.id.commentsList);
         userTv = (TextView) findViewById(R.id.user);
+        dueDate = (TextView) findViewById(R.id.date);
 
         this.query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,6 +82,7 @@ public class IssueDetail extends AppCompatActivity {
                     description.setText(map.get("description").toString());
                     status.setText("Status: " + map.get("status").toString());
                     points.setText("Priority:" + map.get("points").toString());
+                    dueDate.setText("Due date: " + map.get("dueDate".toString()));
 
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();

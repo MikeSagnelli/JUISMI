@@ -111,4 +111,12 @@
         android:layout_below="@+id/textView"
         android:layout_marginBottom="140dp" />
 
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/user"
+        android:layout_below="@+id/user"
+        android:text="TextView" />
+
 </RelativeLayout>

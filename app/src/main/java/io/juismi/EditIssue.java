@@ -40,7 +40,7 @@ public class EditIssue extends AppCompatActivity {
     private Spinner status;
     private String key,
                    boardID, userID;
-    private TextView name, description;
+    private EditText name, description, dueDate;
     private FirebaseAdapter adapter;
     private ArrayList<String> tags, allTags;
     private ArrayList<CheckBox> checkBoxes;
@@ -54,10 +54,11 @@ public class EditIssue extends AppCompatActivity {
         setContentView(R.layout.issue_edit);
 
         this.status = (Spinner) findViewById(R.id.status_input2);
-        this.name = (TextView) findViewById(R.id.name_input2);
-        this.description = (TextView) findViewById(R.id.description_input2);
+        this.name = (EditText) findViewById(R.id.name_input2);
+        this.description = (EditText) findViewById(R.id.description_input2);
         this.points = (Spinner) findViewById(R.id.priority);
         this.tagsList = (ListView) findViewById(R.id.listView);
+        this.dueDate = (EditText) findViewById(R.id.dueDate);
 
         Intent intent = getIntent();
         this.key = intent.getStringExtra("issue_key");
@@ -94,6 +95,7 @@ public class EditIssue extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
+                    dueDate.setText(map.get("dueDate").toString());
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();
                     }
