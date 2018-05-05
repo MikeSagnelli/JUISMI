@@ -35,9 +35,9 @@ public class BoardsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boards);
-        getSupportActionBar().setTitle("BOARDS");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Boards");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         this.listView = (ListView)findViewById(R.id.listView);
         this.addBoard = (FloatingActionButton)findViewById(R.id.addBoard);

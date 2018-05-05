@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Comment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,7 +36,7 @@ import java.util.HashMap;
 
 public class IssueDetail extends AppCompatActivity {
 
-    private ListView listView;
+    private ListView listView, commentsList;
     private FirebaseAuth mAuth;
     private DatabaseReference db;
     private FirebaseUser user;
@@ -42,9 +44,9 @@ public class IssueDetail extends AppCompatActivity {
     private IssueModel im;
     private String key,
                    boardID, userID;
-    private TextView name, description, status, points, userTv;
-    private FirebaseAdapter adapter;
-    private ArrayList<String> tags;
+    private TextView name, description, status, points, userTv, dueDate;
+    private FirebaseAdapter adapter, commentsAdapter;
+    private ArrayList<String> tags, comments;
 
     private static final int EDIT_ISSUE = 0;
 
@@ -66,7 +68,9 @@ public class IssueDetail extends AppCompatActivity {
         status = (TextView) findViewById(R.id.statusIssue);
         points = (TextView) findViewById(R.id.storyPoints);
         listView = (ListView) findViewById(R.id.tagLstView);
+        commentsList = (ListView) findViewById(R.id.commentsList);
         userTv = (TextView) findViewById(R.id.user);
+        dueDate = (TextView) findViewById(R.id.date);
 
         this.query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -77,11 +81,14 @@ public class IssueDetail extends AppCompatActivity {
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
                     status.setText("Status: " + map.get("status").toString());
-                    points.setText("Story Points:" + map.get("points").toString());
+                    points.setText("Priority:" + map.get("points").toString());
+                    dueDate.setText("Due date: " + map.get("dueDate".toString()));
 
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();
                         setUserName(userID);
+                    } else{
+                        setUserName("None");
                     }
                 }
             }
@@ -119,6 +126,7 @@ public class IssueDetail extends AppCompatActivity {
         });
 
         this.setTags();
+        this.setComments();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,7 +154,21 @@ public class IssueDetail extends AppCompatActivity {
         };
 
         this.listView.setAdapter(this.adapter);
+    }
 
+    private void setComments(){
+        this.comments = new ArrayList<>();
+        this.commentsAdapter = new FirebaseAdapter<CommentModel>(this.db.child("comments").orderByChild("issueID").equalTo(this.key), CommentModel.class, R.layout.comment_row, this) {
+            @Override
+            protected void populateView(View v, CommentModel model) {
+                int index = getModels().indexOf(model);
+                comments.add(getKey(index));
+                TextView comment = v.findViewById(R.id.comment);
+                comment.setText(model.getComment());
+            }
+        };
+
+        this.commentsList.setAdapter(this.commentsAdapter);
     }
 
     private void setUserName(String userID){

@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +42,11 @@ public class RegisterIssue extends AppCompatActivity{
     private String boardID, userID;
     private List<String> tags;
     private ListView tagsList;
+    private Spinner spinner;
     private FirebaseAdapter<TagModel> adapter;
     private ArrayList<CheckBox> checkBoxes;
     private AssignDialog dialog;
+    private IssueModel newIssue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,15 @@ public class RegisterIssue extends AppCompatActivity{
         Intent intent = getIntent();
         this.boardID = intent.getStringExtra("board_key");
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
+        this.spinner = (Spinner) findViewById(R.id.priority);
+        ArrayList<Integer> priority_options = new ArrayList<>();
+        for(int i = 0; i <= 5; i++){
+            priority_options.add(i);
+        }
+
+        ArrayAdapter<Integer> adapter;
+        adapter = new ArrayAdapter<Integer>(this, R.layout.priority_spinner, R.id.priority_item, priority_options);
+        spinner.setAdapter(adapter);
 
         this.tagsList = (ListView) findViewById(R.id.tagslistView);
         this.setListView();
@@ -59,23 +72,41 @@ public class RegisterIssue extends AppCompatActivity{
         this.dialog = new AssignDialog(this.boardID, this);
    }
 
-    public void saveButtonClicked(View v){
+    public void saveButtonClicked(View v) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
-
-        IssueModel newIssue = new IssueModel(
+        newIssue = new IssueModel(
                 ((EditText) findViewById(R.id.name_input)).getText().toString(),
                 ((EditText) findViewById(R.id.description_input)).getText().toString(),
-                Integer.parseInt(((EditText) findViewById(R.id.points_input)).getText().toString()),
+                (Integer) spinner.getSelectedItem(),
                 "To Do",
-                this.boardID, this.userID
+                this.boardID,
+                this.userID,
+                ((EditText)findViewById(R.id.date)).getText().toString()
         );
+
 
         DatabaseReference ref = mDatabase.child("issues").push();
         String issueID = ref.getKey();
         ref.setValue(newIssue);
         ref.child("board_status").setValue(this.boardID+"_To Do");
+        try{
+            ref.child("board_date").setValue(this.boardID+"_"+sdf.parse(((EditText)findViewById(R.id.date)).getText().toString()).toString());
+        }
+        catch(ParseException e){
+            e.printStackTrace();
+        }
 
         mDatabase.child("boards").child(this.boardID).child("issues").child(issueID).setValue(true);
+        try{
+            if(this.userID != null && this.userID != "") {
+                mDatabase.child("issues").child(issueID).child("board_user").setValue(this.boardID+"_"+this.userID);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
         this.saveTags(issueID);
 
         Intent result = new Intent();

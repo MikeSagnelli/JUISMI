@@ -153,8 +153,18 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.share_button) {
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "JUISMI");
+                String sAux = "\nInstall Juismi for me to add you to my board\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=io.juismi \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "choose one"));
+            } catch(Exception e) {
+                //e.toString();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -176,6 +186,18 @@ public class IssuesActivity extends AppCompatActivity implements NavigationView.
             Intent c = new Intent(IssuesActivity.this, CollaboratorsActivity.class);
             c.putExtra("board_key", this.boardID);
             startActivityForResult(c, COLLABORATORS);
+        } else if (id == R.id.nav_share){
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "JUISMI");
+                String sAux = "\nInstall Juismi for me to add you to my board\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=io.juismi \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "choose one"));
+            } catch(Exception e) {
+                //e.toString();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +42,12 @@ public class EditIssue extends AppCompatActivity {
     private Spinner status;
     private String key,
                    boardID, userID;
-    private TextView name, description, points;
+    private EditText name, description, dueDate;
     private FirebaseAdapter adapter;
     private ArrayList<String> tags, allTags;
     private ArrayList<CheckBox> checkBoxes;
     private ListView tagsList;
+    private Spinner points;
     private AssignDialog dialog;
 
     @Override
@@ -53,10 +56,11 @@ public class EditIssue extends AppCompatActivity {
         setContentView(R.layout.issue_edit);
 
         this.status = (Spinner) findViewById(R.id.status_input2);
-        this.name = (TextView) findViewById(R.id.name_input2);
-        this.description = (TextView) findViewById(R.id.description_input2);
-        this.points = (TextView) findViewById(R.id.points_input2);
+        this.name = (EditText) findViewById(R.id.name_input2);
+        this.description = (EditText) findViewById(R.id.description_input2);
+        this.points = (Spinner) findViewById(R.id.priority);
         this.tagsList = (ListView) findViewById(R.id.listView);
+        this.dueDate = (EditText) findViewById(R.id.dueDate);
 
         Intent intent = getIntent();
         this.key = intent.getStringExtra("issue_key");
@@ -67,6 +71,16 @@ public class EditIssue extends AppCompatActivity {
         this.user = mAuth.getCurrentUser();
         this.db = FirebaseDatabase.getInstance().getReference();
         this.dialog =  new AssignDialog(this.boardID, this);
+
+        this.points = (Spinner) findViewById(R.id.priority);
+        ArrayList<Integer> priority_options = new ArrayList<>();
+        for(int i = 0; i <= 5; i++){
+            priority_options.add(i);
+        }
+
+        ArrayAdapter<Integer> adapter_priority;
+        adapter_priority = new ArrayAdapter<Integer>(this, R.layout.priority_spinner, R.id.priority_item, priority_options);
+        this.points.setAdapter(adapter_priority);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.status_arrays, android.R.layout.simple_spinner_item);
@@ -83,6 +97,7 @@ public class EditIssue extends AppCompatActivity {
                     HashMap map = (HashMap)dataSnapshot.getValue();
                     name.setText(map.get("name").toString());
                     description.setText(map.get("description").toString());
+                    dueDate.setText(map.get("dueDate").toString());
                     if(map.get("userID") != null){
                         userID = map.get("userID").toString();
                     }
@@ -97,7 +112,7 @@ public class EditIssue extends AppCompatActivity {
                             status.setSelection(2);
                             break;
                     }
-                    points.setText(map.get("points").toString());
+                    points.setSelection(((Long) map.get("points")).intValue());
                 }
         }
 
@@ -120,11 +135,19 @@ public class EditIssue extends AppCompatActivity {
         postValues.put("name", ((EditText) findViewById(R.id.name_input2)).getText().toString());
         postValues.put("description", ((EditText) findViewById(R.id.description_input2)).getText().toString());
         postValues.put("status", status);
-        postValues.put("points", Integer.parseInt(((EditText) findViewById(R.id.points_input2)).getText().toString()));
+        postValues.put("points", (Integer) points.getSelectedItem());
         postValues.put("userID", this.userID);
+        postValues.put("dueDate", ((EditText) findViewById(R.id.dueDate)).getText().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
 
         db.child("issues").child(this.key).updateChildren(postValues);
         db.child("issues").child(this.key).child("board_status").setValue(this.boardID+"_"+status);
+        try{
+            db.child("issues").child(this.key).child("board_date").setValue(this.boardID+"_"+sdf.parse(((EditText)findViewById(R.id.dueDate)).getText().toString()).toString());
+        }
+        catch(ParseException e){
+            e.printStackTrace();
+        }
 
         this.saveTags(this.key);
 
@@ -156,6 +179,11 @@ public class EditIssue extends AppCompatActivity {
         };
 
         this.tagsList.setAdapter(this.adapter);
+    }
+
+    public void addComment(View v){
+        CommentDialogFragment cdf = new CommentDialogFragment(this.key, this);
+        cdf.show();
     }
 
     private void saveTags(String issueID){

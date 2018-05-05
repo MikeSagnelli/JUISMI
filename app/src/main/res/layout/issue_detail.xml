@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -40,9 +42,8 @@
         style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/deleteButton"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/storyPoints"
-        android:layout_marginTop="64dp"
         android:text="Edit Issue" />
 
     <Button
@@ -50,8 +51,9 @@
         style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editButton"
+        android:layout_marginBottom="34dp"
         android:text="DELETE ISSUE" />
 
     <TextView
@@ -87,7 +89,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignStart="@+id/tagContainer"
-            android:layout_alignTop="@+id/tagContainer" />
+            android:layout_alignTop="@+id/tagContainer"
+            tools:ignore="NotSibling" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/user"
+        android:layout_below="@+id/tagContainer"
+        android:text="Comments:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorAccent" />
+
+    <ListView
+        android:id="@+id/commentsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginBottom="140dp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/user"
+        android:layout_below="@+id/user"
+        android:text="TextView" />
 
 </RelativeLayout>
